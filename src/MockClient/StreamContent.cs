@@ -79,7 +79,8 @@ namespace MockClient
 
         public static bool operator ==(StreamContent header, Stream value)
         {
-            return StreamCompare.CompareAsync(header.content, value).GetAwaiter().GetResult();
+            // return StreamCompare.CompareAsync(header.content, value).GetAwaiter().GetResult();
+            return false;
         }
 
         public static bool operator !=(StreamContent header, Stream value) => !(header == value);

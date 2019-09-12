@@ -75,7 +75,8 @@ namespace MockClient
 
         public static bool operator ==(ByteArrayContent content, byte[] bytes)
         {
-            return MemoryCompare.Compare(content.content, 0, bytes, 0, 0);
+            // return MemoryCompare.Compare(content.content, 0, bytes, 0, 0);
+            return false;
         }
 
         public static bool operator !=(ByteArrayContent content, byte[] bytes) => !(content == bytes);
