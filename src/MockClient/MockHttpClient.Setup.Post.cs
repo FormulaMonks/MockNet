@@ -15,7 +15,7 @@ namespace MockClient
             return Setup(HttpMethod.Post, uri, headers);
         }
 
-        public ISetup SetupPost<T>(HttpMethod method, string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<T, bool>> content)
+        public ISetup SetupPost<T>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<T, bool>> content)
         {
             return Setup(HttpMethod.Post, uri, headers, content);
         }
