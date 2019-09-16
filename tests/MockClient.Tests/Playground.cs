@@ -1,24 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
-using SystemHttpClient = System.Net.Http.HttpClient;
-using SystemDelegatingHandler = System.Net.Http.DelegatingHandler;
-using SystemHttpResponseMessage = System.Net.Http.HttpResponseMessage;
-using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
-using SystemHttpContent = System.Net.Http.HttpContent;
-using SystemHttpStatusCode = System.Net.HttpStatusCode;
-using SystemHttpRequestHeaders = System.Net.Http.Headers.HttpRequestHeaders;
-
-using System.Threading;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MockClient.Tests
 {
@@ -139,6 +120,23 @@ namespace MockClient.Tests
             await mock.Object.GetAsync("/");
 
             Assert.Throws<MockHttpClientException>(() => mock.VerifyAll());
+        }
+
+        [Fact]
+        public async Task ReturnsHeaderInformation()
+        {
+            var mock = new MockHttpClient();
+
+            var headers = new HttpResponseHeaders();
+            headers.AcceptRanges.Add("none");
+            headers[""] = "";
+            headers.Location = new System.Uri("");
+
+            mock.SetupPost<StringContent>("/", x => x.Accept == "application/json", x => x == "test").ReturnsAsync(headers);
+
+            var result = await mock.Object.GetAsync("/");
+
+            // Assert.Equal(headers.Location, result.Headers.Location.ToString());
         }
     }
 }
