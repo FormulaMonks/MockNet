@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -129,14 +130,47 @@ namespace MockClient.Tests
 
             var headers = new HttpResponseHeaders();
             headers.AcceptRanges.Add("none");
-            headers[""] = "";
-            headers.Location = new System.Uri("");
 
-            mock.SetupPost<StringContent>("/", x => x.Accept == "application/json", x => x == "test").ReturnsAsync(headers);
+            mock.SetupGet("/", x => true).ReturnsAsync(headers);
 
             var result = await mock.Object.GetAsync("/");
 
-            // Assert.Equal(headers.Location, result.Headers.Location.ToString());
+            Assert.Equal(headers.AcceptRanges, result.Headers.AcceptRanges);
+        }
+
+        [Fact]
+        public async Task ReturnsCustomHeaderInformation()
+        {
+            var mock = new MockHttpClient();
+
+            var headers = new HttpResponseHeaders();
+            headers["x-session-id"] = Guid.NewGuid().ToString();
+
+            mock.SetupGet("/", x => true).ReturnsAsync(headers);
+
+            var result = await mock.Object.GetAsync("/");
+
+            Assert.Equal(headers.GetValues("x-session-id"), result.Headers.GetValues("x-session-id"));
+        }
+
+        [Fact]
+        public async Task ReturnsMultipleHeaderInformation()
+        {
+            var mock = new MockHttpClient();
+
+            var headers = new HttpResponseHeaders();
+            headers["x-session-id"] = Guid.NewGuid().ToString();
+            headers.AcceptRanges.Add("none");
+            headers.AcceptRanges.Add("bytes");
+            headers.Location = new Uri("https://localhost/v1/customers/1");
+
+            mock.SetupGet("/", x => true).ReturnsAsync(headers);
+
+            var result = await mock.Object.GetAsync("/");
+
+            Assert.Equal(headers.GetValues("x-session-id"), result.Headers.GetValues("x-session-id"));
+            Assert.Equal(headers.AcceptRanges, result.Headers.AcceptRanges);
+            Assert.Equal(headers.Location, result.Headers.Location);
         }
     }
 }

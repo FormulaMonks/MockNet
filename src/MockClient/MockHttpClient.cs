@@ -8,7 +8,7 @@ namespace MockClient
     public partial class MockHttpClient
     {
         private SystemHttpClient httpClient;
-        private readonly MockHandler handler;
+        private readonly HttpMessageHandler handler;
         private string baseAddress;
 
         public SystemHttpClient Object => httpClient;
@@ -23,7 +23,7 @@ namespace MockClient
         {
             this.baseAddress = baseAddress;
             Setups = new SetupCollection();
-            handler = new MockHandler(Setups);
+            handler = new HttpMessageHandler(Setups);
             httpClient = new SystemHttpClient(handler)
             {
                 BaseAddress = new Uri(baseAddress),

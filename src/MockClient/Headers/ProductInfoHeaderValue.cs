@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemProductInfoHeaderValue GetValue() => value;
 
-        public static implicit operator string(ProductInfoHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(ProductInfoHeaderValue header) => header.ToString();
         public static implicit operator ProductInfoHeaderValue(string input) => new ProductInfoHeaderValue(Parse(input));
         public static implicit operator SystemProductInfoHeaderValue(ProductInfoHeaderValue header) => header.GetValue();
         public static implicit operator ProductInfoHeaderValue(SystemProductInfoHeaderValue header) => new ProductInfoHeaderValue(header);

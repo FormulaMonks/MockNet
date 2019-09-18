@@ -7,11 +7,11 @@ using System.Threading;
 
 namespace MockClient
 {
-    internal sealed class MockHandler : SystemDelegatingHandler // <-- temp name should be MockHttpMessageHandler
+    internal sealed class HttpMessageHandler : SystemDelegatingHandler
     {
         private readonly SetupCollection setups;
 
-        public MockHandler(SetupCollection setups)
+        public HttpMessageHandler(SetupCollection setups)
         {
             this.setups = setups;
         }

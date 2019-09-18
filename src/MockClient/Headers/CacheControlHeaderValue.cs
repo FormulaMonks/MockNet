@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemCacheControlHeaderValue GetValue() => value;
 
-        public static implicit operator string(CacheControlHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(CacheControlHeaderValue header) => header.ToString();
         public static implicit operator CacheControlHeaderValue(string input) => new CacheControlHeaderValue(Parse(input));
         public static implicit operator SystemCacheControlHeaderValue(CacheControlHeaderValue header) => header.GetValue();
         public static implicit operator CacheControlHeaderValue(SystemCacheControlHeaderValue header) => new CacheControlHeaderValue(header);

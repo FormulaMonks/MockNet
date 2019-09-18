@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemMediaTypeWithQualityHeaderValue GetValue() => value;
 
-        public static implicit operator string(MediaTypeWithQualityHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(MediaTypeWithQualityHeaderValue header) => header.ToString();
         public static implicit operator MediaTypeWithQualityHeaderValue(string input) => new MediaTypeWithQualityHeaderValue(Parse(input));
         public static implicit operator SystemMediaTypeWithQualityHeaderValue(MediaTypeWithQualityHeaderValue header) => header.GetValue();
         public static implicit operator MediaTypeWithQualityHeaderValue(SystemMediaTypeWithQualityHeaderValue header) => new MediaTypeWithQualityHeaderValue(header);

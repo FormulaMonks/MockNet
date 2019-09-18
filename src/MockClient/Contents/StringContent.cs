@@ -81,7 +81,7 @@ namespace MockClient
 
         public static bool operator ==(StringContent content, string value)
         {
-            return content.value == value;
+            return content?.value == value;
         }
 
         public static bool operator !=(StringContent content, string value) => !(content == value);

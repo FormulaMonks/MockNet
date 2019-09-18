@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemRangeConditionHeaderValue GetValue() => value;
 
-        public static implicit operator string(RangeConditionHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(RangeConditionHeaderValue header) => header.ToString();
         public static implicit operator RangeConditionHeaderValue(string input) => new RangeConditionHeaderValue(Parse(input));
         public static implicit operator SystemRangeConditionHeaderValue(RangeConditionHeaderValue header) => header.GetValue();
         public static implicit operator RangeConditionHeaderValue(SystemRangeConditionHeaderValue header) => new RangeConditionHeaderValue(header);

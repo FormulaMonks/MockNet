@@ -16,63 +16,45 @@ using SystemWarningHeaderValue = System.Net.Http.Headers.WarningHeaderValue;
 
 namespace MockClient
 {
-    public sealed class HttpRequestHeaders
+    public sealed class HttpRequestHeaders : HttpHeaders
     {
-        private readonly SystemHttpRequestHeaders store;
-
         internal HttpRequestHeaders(SystemHttpRequestHeaders store)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
         }
 
-        public string this[string name]
-        {
-            get => throw new NotImplementedException();
-            set => Add(name, value);
-        }
+        internal SystemHttpRequestHeaders Store => store as SystemHttpRequestHeaders;
 
-        public void Add(string name, string value)
-        {
-            store.Add(name, value);
-        }
-
-        public void Add(string name, IEnumerable<string> values)
-        {
-            store.Add(name, values);
-        }
-
-        public HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue, SystemMediaTypeWithQualityHeaderValue> Accept => new HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue, SystemMediaTypeWithQualityHeaderValue>(store.Accept, x => (MediaTypeWithQualityHeaderValue)x);
-        public HttpHeaderValueCollection<ProductInfoHeaderValue, SystemProductInfoHeaderValue> UserAgent => new HttpHeaderValueCollection<ProductInfoHeaderValue, SystemProductInfoHeaderValue>(store.UserAgent, x => (ProductInfoHeaderValue)x);
-        public HttpHeaderValueCollection<ProductHeaderValue, SystemProductHeaderValue> Upgrade => new HttpHeaderValueCollection<ProductHeaderValue, SystemProductHeaderValue>(store.Upgrade, x => (ProductHeaderValue)x);
-        public bool? TransferEncodingChunked { get => store.TransferEncodingChunked; set => store.TransferEncodingChunked = value; }
-        public HttpHeaderValueCollection<TransferCodingHeaderValue, SystemTransferCodingHeaderValue> TransferEncoding => new HttpHeaderValueCollection<TransferCodingHeaderValue, SystemTransferCodingHeaderValue>(store.TransferEncoding, x => (TransferCodingHeaderValue)x);
-        public HttpHeaderValueCollection<string> Trailer => new HttpHeaderValueCollection<string>(store.Trailer);
-        public HttpHeaderValueCollection<TransferCodingWithQualityHeaderValue, SystemTransferCodingWithQualityHeaderValue> TE => new HttpHeaderValueCollection<TransferCodingWithQualityHeaderValue, SystemTransferCodingWithQualityHeaderValue>(store.TE, x => (TransferCodingWithQualityHeaderValue)x);
-        public Uri Referrer { get => store.Referrer; set => store.Referrer = value; }
-        public RangeHeaderValue Range { get => store.Range; set => store.Range = value; }
-        public AuthenticationHeaderValue ProxyAuthorization { get => store.ProxyAuthorization; set => store.ProxyAuthorization = value; }
-        public HttpHeaderValueCollection<NameValueHeaderValue, SystemNameValueHeaderValue> Pragma => new HttpHeaderValueCollection<NameValueHeaderValue, SystemNameValueHeaderValue>(store.Pragma, x => (NameValueHeaderValue)x);
-        public int? MaxForwards { get => store.MaxForwards; set => store.MaxForwards = value; }
-        public DateTimeOffset? IfUnmodifiedSince { get => store.IfUnmodifiedSince; set => store.IfUnmodifiedSince = value; }
-        public RangeConditionHeaderValue IfRange { get => store.IfRange; set => store.IfRange = value; }
-        public HttpHeaderValueCollection<ViaHeaderValue, SystemViaHeaderValue> Via => new HttpHeaderValueCollection<ViaHeaderValue, SystemViaHeaderValue>(store.Via, x => (ViaHeaderValue)x);
-        public HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue> IfNoneMatch => new HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue>(store.IfNoneMatch, x => (EntityTagHeaderValue)x);
-        public HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue> IfMatch => new HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue>(store.IfMatch, x => (EntityTagHeaderValue)x);
-        public string Host { get => store.Host; set => store.Host = value; }
-        public string From { get => store.From; set => store.From = value; }
-        public bool? ExpectContinue { get => store.ExpectContinue; set => store.ExpectContinue = value; }
-        public HttpHeaderValueCollection<NameValueWithParametersHeaderValue, SystemNameValueWithParametersHeaderValue> Expect => new HttpHeaderValueCollection<NameValueWithParametersHeaderValue, SystemNameValueWithParametersHeaderValue>(store.Expect, x => (NameValueWithParametersHeaderValue)x);
-        public DateTimeOffset? Date { get => store.Date; set => store.Date = value; }
-        public bool? ConnectionClose { get => store.ConnectionClose; set => store.ConnectionClose = value; }
-        public HttpHeaderValueCollection<string> Connection => new HttpHeaderValueCollection<string>(store.Connection);
-        public CacheControlHeaderValue CacheControl { get => store.CacheControl; set => store.CacheControl = value; }
-        public AuthenticationHeaderValue Authorization { get => store.Authorization; set => store.Authorization = value; }
-        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptLanguage => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(store.AcceptLanguage, x => (StringWithQualityHeaderValue)x);
-        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptEncoding => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(store.AcceptEncoding, x => (StringWithQualityHeaderValue)x);
-        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptCharset => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(store.AcceptCharset, x => (StringWithQualityHeaderValue)x);
+        public HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue, SystemMediaTypeWithQualityHeaderValue> Accept => new HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue, SystemMediaTypeWithQualityHeaderValue>(Store.Accept, x => (MediaTypeWithQualityHeaderValue)x);
+        public HttpHeaderValueCollection<ProductInfoHeaderValue, SystemProductInfoHeaderValue> UserAgent => new HttpHeaderValueCollection<ProductInfoHeaderValue, SystemProductInfoHeaderValue>(Store.UserAgent, x => (ProductInfoHeaderValue)x);
+        public HttpHeaderValueCollection<ProductHeaderValue, SystemProductHeaderValue> Upgrade => new HttpHeaderValueCollection<ProductHeaderValue, SystemProductHeaderValue>(Store.Upgrade, x => (ProductHeaderValue)x);
+        public bool? TransferEncodingChunked { get => Store.TransferEncodingChunked; set => Store.TransferEncodingChunked = value; }
+        public HttpHeaderValueCollection<TransferCodingHeaderValue, SystemTransferCodingHeaderValue> TransferEncoding => new HttpHeaderValueCollection<TransferCodingHeaderValue, SystemTransferCodingHeaderValue>(Store.TransferEncoding, x => (TransferCodingHeaderValue)x);
+        public HttpHeaderValueCollection<string> Trailer => new HttpHeaderValueCollection<string>(Store.Trailer);
+        public HttpHeaderValueCollection<TransferCodingWithQualityHeaderValue, SystemTransferCodingWithQualityHeaderValue> TE => new HttpHeaderValueCollection<TransferCodingWithQualityHeaderValue, SystemTransferCodingWithQualityHeaderValue>(Store.TE, x => (TransferCodingWithQualityHeaderValue)x);
+        public Uri Referrer { get => Store.Referrer; set => Store.Referrer = value; }
+        public RangeHeaderValue Range { get => Store.Range; set => Store.Range = value; }
+        public AuthenticationHeaderValue ProxyAuthorization { get => Store.ProxyAuthorization; set => Store.ProxyAuthorization = value; }
+        public HttpHeaderValueCollection<NameValueHeaderValue, SystemNameValueHeaderValue> Pragma => new HttpHeaderValueCollection<NameValueHeaderValue, SystemNameValueHeaderValue>(Store.Pragma, x => (NameValueHeaderValue)x);
+        public int? MaxForwards { get => Store.MaxForwards; set => Store.MaxForwards = value; }
+        public DateTimeOffset? IfUnmodifiedSince { get => Store.IfUnmodifiedSince; set => Store.IfUnmodifiedSince = value; }
+        public RangeConditionHeaderValue IfRange { get => Store.IfRange; set => Store.IfRange = value; }
+        public HttpHeaderValueCollection<ViaHeaderValue, SystemViaHeaderValue> Via => new HttpHeaderValueCollection<ViaHeaderValue, SystemViaHeaderValue>(Store.Via, x => (ViaHeaderValue)x);
+        public HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue> IfNoneMatch => new HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue>(Store.IfNoneMatch, x => (EntityTagHeaderValue)x);
+        public HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue> IfMatch => new HttpHeaderValueCollection<EntityTagHeaderValue, SystemEntityTagHeaderValue>(Store.IfMatch, x => (EntityTagHeaderValue)x);
+        public string Host { get => Store.Host; set => Store.Host = value; }
+        public string From { get => Store.From; set => Store.From = value; }
+        public bool? ExpectContinue { get => Store.ExpectContinue; set => Store.ExpectContinue = value; }
+        public HttpHeaderValueCollection<NameValueWithParametersHeaderValue, SystemNameValueWithParametersHeaderValue> Expect => new HttpHeaderValueCollection<NameValueWithParametersHeaderValue, SystemNameValueWithParametersHeaderValue>(Store.Expect, x => (NameValueWithParametersHeaderValue)x);
+        public DateTimeOffset? Date { get => Store.Date; set => Store.Date = value; }
+        public bool? ConnectionClose { get => Store.ConnectionClose; set => Store.ConnectionClose = value; }
+        public HttpHeaderValueCollection<string> Connection => new HttpHeaderValueCollection<string>(Store.Connection);
+        public CacheControlHeaderValue CacheControl { get => Store.CacheControl; set => Store.CacheControl = value; }
+        public AuthenticationHeaderValue Authorization { get => Store.Authorization; set => Store.Authorization = value; }
+        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptLanguage => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(Store.AcceptLanguage, x => (StringWithQualityHeaderValue)x);
+        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptEncoding => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(Store.AcceptEncoding, x => (StringWithQualityHeaderValue)x);
+        public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptCharset => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(Store.AcceptCharset, x => (StringWithQualityHeaderValue)x);
         public DateTimeOffset? IfModifiedSince { get; set; }
-        public HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue> Warning => new HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue>(store.Warning, x => (WarningHeaderValue)x);
-
-        public IEnumerator<KeyValuePair<string, IEnumerable<string>>> GetEnumerator() => store.GetEnumerator();
+        public HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue> Warning => new HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue>(Store.Warning, x => (WarningHeaderValue)x);
     }
 }

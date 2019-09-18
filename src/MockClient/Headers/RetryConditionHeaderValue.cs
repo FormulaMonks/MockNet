@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemRetryConditionHeaderValue GetValue() => value;
 
-        public static implicit operator string(RetryConditionHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(RetryConditionHeaderValue header) => header.ToString();
         public static implicit operator RetryConditionHeaderValue(string input) => new RetryConditionHeaderValue(Parse(input));
         public static implicit operator SystemRetryConditionHeaderValue(RetryConditionHeaderValue header) => header.GetValue();
         public static implicit operator RetryConditionHeaderValue(SystemRetryConditionHeaderValue header) => new RetryConditionHeaderValue(header);

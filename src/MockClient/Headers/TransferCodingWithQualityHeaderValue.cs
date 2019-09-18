@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemTransferCodingWithQualityHeaderValue GetValue() => value;
 
-        public static implicit operator string(TransferCodingWithQualityHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(TransferCodingWithQualityHeaderValue header) => header.ToString();
         public static implicit operator TransferCodingWithQualityHeaderValue(string input) => new TransferCodingWithQualityHeaderValue(Parse(input));
         public static implicit operator SystemTransferCodingWithQualityHeaderValue(TransferCodingWithQualityHeaderValue header) => header.GetValue();
         public static implicit operator TransferCodingWithQualityHeaderValue(SystemTransferCodingWithQualityHeaderValue header) => new TransferCodingWithQualityHeaderValue(header);

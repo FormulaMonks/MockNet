@@ -33,7 +33,9 @@ namespace MockClient
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public static implicit operator string(HttpHeaderValueCollection<T> header) => header.store.ToString();
+        public override string ToString() => store.ToString();
+
+        public static implicit operator string(HttpHeaderValueCollection<T> header) => header.ToString();
         public static implicit operator System.Net.Http.Headers.HttpHeaderValueCollection<T>(HttpHeaderValueCollection<T> header) => header.store;
         public static implicit operator HttpHeaderValueCollection<T>(System.Net.Http.Headers.HttpHeaderValueCollection<T> collection) => new HttpHeaderValueCollection<T>(collection);
     }
@@ -69,7 +71,9 @@ namespace MockClient
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public static implicit operator string(HttpHeaderValueCollection<T, S> header) => header.store.ToString();
+        public override string ToString() => store.ToString();
+
+        public static implicit operator string(HttpHeaderValueCollection<T, S> header) => header.ToString();
         public static implicit operator System.Net.Http.Headers.HttpHeaderValueCollection<S>(HttpHeaderValueCollection<T, S> header) => header.store;
         public static implicit operator HttpHeaderValueCollection<T, S>(System.Net.Http.Headers.HttpHeaderValueCollection<S> collection) => new HttpHeaderValueCollection<T, S>(collection, x => default);
     }

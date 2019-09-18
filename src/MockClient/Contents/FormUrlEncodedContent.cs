@@ -120,7 +120,7 @@ namespace MockClient
 
         public static bool operator ==(FormUrlEncodedContent content, IEnumerable<KeyValuePair<string, string>> collection)
         {
-            return content.Equals(collection);
+            return content?.Equals(collection) ?? false;
         }
 
         public static bool operator !=(FormUrlEncodedContent content, IEnumerable<KeyValuePair<string, string>> collection) => !(content == collection);

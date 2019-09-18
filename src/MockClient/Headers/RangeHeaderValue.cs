@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemRangeHeaderValue GetValue() => value;
 
-        public static implicit operator string(RangeHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(RangeHeaderValue header) => header.ToString();
         public static implicit operator RangeHeaderValue(string input) => new RangeHeaderValue(Parse(input));
         public static implicit operator SystemRangeHeaderValue(RangeHeaderValue header) => header.GetValue();
         public static implicit operator RangeHeaderValue(SystemRangeHeaderValue header) => new RangeHeaderValue(header);

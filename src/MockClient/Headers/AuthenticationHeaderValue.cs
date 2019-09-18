@@ -15,7 +15,9 @@ namespace MockClient
 
         public SystemAuthenticationHeaderValue GetValue() => value;
 
-        public static implicit operator string(AuthenticationHeaderValue header) => header.GetValue().ToString();
+        public override string ToString() => value.ToString();
+
+        public static implicit operator string(AuthenticationHeaderValue header) => header.ToString();
         public static implicit operator AuthenticationHeaderValue(string input) => new AuthenticationHeaderValue(Parse(input));
         public static implicit operator SystemAuthenticationHeaderValue(AuthenticationHeaderValue header) => header.GetValue();
         public static implicit operator AuthenticationHeaderValue(SystemAuthenticationHeaderValue header) => new AuthenticationHeaderValue(header);
