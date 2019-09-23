@@ -51,7 +51,7 @@ Left to do:
 
 [] `medium` Expression Visitor to enable things like Is.XXX
 [] `high` Exception messages
-[] `high` Response Headers
+[*] `high` Response Headers
 [] `low` add better support to match on request uri
     - / == http[s]://.../
     - /test == http[s]://.../test
