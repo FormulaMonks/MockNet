@@ -5,7 +5,7 @@ using SystemStringContent = System.Net.Http.StringContent;
 
 namespace MockClient
 {
-    public class StringContent : IContent
+    public class StringContent : IHttpContent
     {
         private readonly string value;
         private readonly Encoding encoding;

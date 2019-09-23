@@ -2,7 +2,7 @@ using SystemHttpContent = System.Net.Http.HttpContent;
 
 namespace MockClient
 {
-    public interface IContent
+    public interface IHttpContent
     {
         SystemHttpContent ToHttpContent();
     }

@@ -8,7 +8,7 @@ namespace MockClient
     {
         private SystemHttpStatusCode code = SystemHttpStatusCode.OK;
         private HttpResponseHeaders headers;
-        private IContent content;
+        private IHttpContent content;
 
         public HttpResponseMessageBuilder WithStatusCode(int code)
         {
@@ -24,7 +24,7 @@ namespace MockClient
             return this;
         }
 
-        public HttpResponseMessageBuilder WithContent(IContent content)
+        public HttpResponseMessageBuilder WithContent(IHttpContent content)
         {
             this.content = content;
 
@@ -35,7 +35,7 @@ namespace MockClient
         {
             var message = new SystemHttpResponseMessage(code);
 
-            if (content is IContent)
+            if (content is IHttpContent)
             {
                 message.Content = content.ToHttpContent();
             }

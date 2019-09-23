@@ -6,7 +6,7 @@ using SystemByteArrayContent = System.Net.Http.ByteArrayContent;
 
 namespace MockClient
 {
-    public class ByteArrayContent : IContent
+    public class ByteArrayContent : IHttpContent
     {
         private readonly byte[] content;
         private readonly int offset;

@@ -2,7 +2,7 @@ using SystemHttpContent = System.Net.Http.HttpContent;
 
 namespace MockClient
 {
-    public class MultipartFormDataContent : IContent
+    public class MultipartFormDataContent : IHttpContent
     {
         public SystemHttpContent ToHttpContent() => null;
     }

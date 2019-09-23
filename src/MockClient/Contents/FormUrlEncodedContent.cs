@@ -7,7 +7,7 @@ using System;
 
 namespace MockClient
 {
-    public class FormUrlEncodedContent : IContent, IDictionary<string, string>
+    public class FormUrlEncodedContent : IHttpContent, IDictionary<string, string>
     {
         private readonly IDictionary<string, string> content;
 

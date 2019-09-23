@@ -5,7 +5,7 @@ using SystemStreamContent = System.Net.Http.StreamContent;
 
 namespace MockClient
 {
-    public class StreamContent : IContent, IDisposable
+    public class StreamContent : IHttpContent, IDisposable
     {
         private readonly Stream content;
         private readonly int bufferSize;

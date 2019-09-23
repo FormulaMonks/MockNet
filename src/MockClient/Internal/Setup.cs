@@ -26,7 +26,7 @@ namespace MockClient
             return ReturnsAsync(code, null, null);
         }
 
-        public IReturns ReturnsAsync(IContent content)
+        public IReturns ReturnsAsync(IHttpContent content)
         {
             return ReturnsAsync(defaultHttpStatusCode, null, content);
         }
@@ -36,7 +36,7 @@ namespace MockClient
             return ReturnsAsync(defaultHttpStatusCode, headers, null);
         }
 
-        public IReturns ReturnsAsync(int code, IContent content)
+        public IReturns ReturnsAsync(int code, IHttpContent content)
         {
             return ReturnsAsync(code, null, content);
         }
@@ -46,12 +46,12 @@ namespace MockClient
             return ReturnsAsync(code, headers, null);
         }
 
-        public IReturns ReturnsAsync(HttpResponseHeaders headers, IContent content)
+        public IReturns ReturnsAsync(HttpResponseHeaders headers, IHttpContent content)
         {
             return ReturnsAsync(defaultHttpStatusCode, headers, content);
         }
 
-        public IReturns ReturnsAsync(int code, HttpResponseHeaders headers, IContent content)
+        public IReturns ReturnsAsync(int code, HttpResponseHeaders headers, IHttpContent content)
         {
             var message = new HttpResponseMessageBuilder()
                 .WithStatusCode(code)
