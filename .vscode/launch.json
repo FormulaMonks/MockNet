@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/tests/MockClient.Tests/bin/Debug/netcoreapp3.0/MockClient.Tests.dll",
+            "program": "${workspaceFolder}/tests/MockNet.Tests/bin/Debug/netcoreapp3.0/MockNet.Tests.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/tests/MockClient.Tests",
+            "cwd": "${workspaceFolder}/tests/MockNet.Tests",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

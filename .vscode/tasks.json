@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/tests/MockClient.Tests/MockClient.Tests.csproj",
+                "${workspaceFolder}/tests/MockNet.Tests/MockNet.Tests.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/tests/MockClient.Tests/MockClient.Tests.csproj",
+                "${workspaceFolder}/tests/MockNet.Tests/MockNet.Tests.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/tests/MockClient.Tests/MockClient.Tests.csproj",
+                "${workspaceFolder}/tests/MockNet.Tests/MockNet.Tests.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
