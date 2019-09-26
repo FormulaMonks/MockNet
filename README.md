@@ -50,10 +50,11 @@ Utils.Json.ToObject<T>()
 Left to do:
 
 [] `medium` Expression Visitor to enable things like Is.XXX
-[] `high` Exception messages
+[*] `high` Exception messages
 [*] `high` Response Headers
 [] `low` add better support to match on request uri
     - / == http[s]://.../
     - /test == http[s]://.../test
     - http[s]://.../path != http[-s]://.../path
 [] `low` handle MultipartContent & MultipartFormDataContent
+[*] `high` add content header to the header validation
