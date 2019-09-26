@@ -12,5 +12,10 @@ namespace MockNet.Http
         {
             return Matched ? null : MockHttpClientException.UnmatchedResult(this);
         }
+
+        public override string ToString()
+        {
+            return HttpResponseMessage?.ToString() ?? "";
+        }
     }
 }

@@ -16,37 +16,37 @@ namespace MockNet.Http
             this.setups = setups;
         }
 
-        protected override Task<SystemHttpResponseMessage> SendAsync(SystemHttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<SystemHttpResponseMessage> SendAsync(SystemHttpRequestMessage request, CancellationToken cancellationToken)
         {
             var setups = this.setups.Find(request).ToList();
 
             if (!setups.Any())
             {
-                throw MockHttpClientException.NoMatchingRequests();
+                throw await MockHttpClientException.NoMatchingRequestsAsync(request);
             }
 
             if (setups.Count() > 1)
             {
-                throw MockHttpClientException.MatchedMultipleRequests();
+                throw await MockHttpClientException.MatchedMultipleRequests(request, setups.Count());
             }
 
             var setup = setups.First();
 
             if (setup is null)
             {
-                throw MockHttpClientException.NoSetup();
+                throw await MockHttpClientException.NoSetupAsync(request);
             }
 
             var result = setup.Results.GetResultNext();
 
             if (result is null)
             {
-                throw MockHttpClientException.NoMatchingResponses();
+                throw await MockHttpClientException.NoMatchingResponses(request);
             }
 
             result.Matched = true;
 
-            return Task.FromResult(result.HttpResponseMessage);
+            return result.HttpResponseMessage;
         }
     }
 }

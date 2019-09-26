@@ -1,34 +1,65 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
+using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
 namespace MockNet.Http
 {
     public class MockHttpClientException : Exception
     {
-        internal static MockHttpClientException NoSetup()
+        internal static async Task<MockHttpClientException> NoSetupAsync(SystemHttpRequestMessage request)
         {
-            return new MockHttpClientException("TBD: no setup.");
+            return new MockHttpClientException(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					@"{0} request failed.
+{1}",
+					await Utils.HttpRequestMessage.ToStringAsync(request),
+					"All requests on the mock must have a corresponding setup."));
         }
 
-        internal static MockHttpClientException NoMatchingRequests()
+        internal static async Task<MockHttpClientException> NoMatchingRequestsAsync(SystemHttpRequestMessage request)
         {
-            return new MockHttpClientException("TBD: no matching requests.");
+            return new MockHttpClientException(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					@"{0}
+{1}",
+					await Utils.HttpRequestMessage.ToStringAsync(request),
+					"No requests found."));
         }
 
-        internal static MockHttpClientException NoMatchingResponses()
+        internal static async Task<MockHttpClientException> NoMatchingResponses(SystemHttpRequestMessage request)
         {
-            return new MockHttpClientException("TBD: no result setup.");
+            return new MockHttpClientException(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					@"{0} request failed.
+{1}",
+					await Utils.HttpRequestMessage.ToStringAsync(request),
+					"All requests on the mock must have a corresponding setup."));
         }
 
-        internal static MockHttpClientException MatchedMultipleRequests()
+        internal static async Task<MockHttpClientException> MatchedMultipleRequests(SystemHttpRequestMessage request, int requestCount)
         {
-            return new MockHttpClientException("TBD: match multiple requests.");
+            return new MockHttpClientException(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					"Expected request on the mock once, but found {0} : {1}",
+					requestCount,
+					await Utils.HttpRequestMessage.ToStringAsync(request)));
         }
 
         internal static MockHttpClientException UnmatchedResult(Result result)
         {
-            return new MockHttpClientException("TBD: unmatched result.");
+            return new MockHttpClientException(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					@"{0}:
+This setup was not matched.",
+					result));
         }
 
         internal static MockHttpClientException Combined(IEnumerable<MockHttpClientException> errors, string preamble = null)
