@@ -13,14 +13,18 @@ using SystemNameValueHeaderValue = System.Net.Http.Headers.NameValueHeaderValue;
 using SystemViaHeaderValue = System.Net.Http.Headers.ViaHeaderValue;
 using SystemEntityTagHeaderValue = System.Net.Http.Headers.EntityTagHeaderValue;
 using SystemWarningHeaderValue = System.Net.Http.Headers.WarningHeaderValue;
+using SystemHttpContentHeaders = System.Net.Http.Headers.HttpContentHeaders;
 
 namespace MockNet.Http
 {
     public sealed class HttpRequestHeaders : HttpHeaders
     {
-        internal HttpRequestHeaders(SystemHttpRequestHeaders store)
+        private SystemHttpContentHeaders contentHeadersStore;
+
+        internal HttpRequestHeaders(SystemHttpRequestHeaders store, SystemHttpContentHeaders contentHeadersStore)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
+            this.contentHeadersStore = contentHeadersStore ?? throw new ArgumentNullException(nameof(contentHeadersStore));
         }
 
         internal SystemHttpRequestHeaders Store => store as SystemHttpRequestHeaders;
@@ -56,5 +60,19 @@ namespace MockNet.Http
         public HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue> AcceptCharset => new HttpHeaderValueCollection<StringWithQualityHeaderValue, SystemStringWithQualityHeaderValue>(Store.AcceptCharset, x => (StringWithQualityHeaderValue)x);
         public DateTimeOffset? IfModifiedSince { get; set; }
         public HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue> Warning => new HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue>(Store.Warning, x => (WarningHeaderValue)x);
+
+        #region Content headers
+        public HttpHeaderValueCollection<string> Allow => new HttpHeaderValueCollection<string>(contentHeadersStore.Allow as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
+        public ContentDispositionHeaderValue ContentDisposition { get => contentHeadersStore.ContentDisposition; set => contentHeadersStore.ContentDisposition = value; }
+        public HttpHeaderValueCollection<string> ContentEncoding => new HttpHeaderValueCollection<string>(contentHeadersStore.ContentEncoding as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
+        public HttpHeaderValueCollection<string> ContentLanguage => new HttpHeaderValueCollection<string>(contentHeadersStore.ContentEncoding as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
+        public long? ContentLength { get => contentHeadersStore.ContentLength; set => contentHeadersStore.ContentLength = value; }
+        public Uri ContentLocation { get => contentHeadersStore.ContentLocation; set => contentHeadersStore.ContentLocation = value; }
+        public byte[] ContentMD5 { get => contentHeadersStore.ContentMD5; set => contentHeadersStore.ContentMD5 = value; }
+        public ContentRangeHeaderValue ContentRange { get => contentHeadersStore.ContentRange; set => contentHeadersStore.ContentRange = value; }
+        public MediaTypeHeaderValue ContentType { get => contentHeadersStore.ContentType; set => contentHeadersStore.ContentType = value; }
+        public DateTimeOffset? Expires { get => contentHeadersStore.Expires; set => contentHeadersStore.Expires = value; }
+        public DateTimeOffset? LastModified { get => contentHeadersStore.LastModified; set => contentHeadersStore.LastModified = value; }
+        #endregion
     }
 }

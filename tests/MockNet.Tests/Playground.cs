@@ -188,5 +188,41 @@ namespace MockNet.Http.Tests
 
             Assert.Equal(201, (int)result.StatusCode);
         }
+
+        [Fact]
+        public async Task TestContentHeaders()
+        {
+            var mock = new MockHttpClient();
+
+            var request = new SystemHttpRequestMessage(HttpMethod.Post, "/");
+            request.Content = new System.Net.Http.StringContent("test", System.Text.Encoding.ASCII, "application/json");
+            request.Content.Headers.Allow.Add("GET");
+            request.Content.Headers.Allow.Add("POST");
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            mock.SetupPost<StringContent>("/", x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", x => x == "test").ReturnsAsync(201);
+
+            var result = await mock.Object.SendAsync(request);
+
+            Assert.Equal(201, (int)result.StatusCode);
+        }
+
+        [Fact]
+        public async Task TestContentHeadersWithStringType()
+        {
+            var mock = new MockHttpClient();
+
+            var request = new SystemHttpRequestMessage(HttpMethod.Post, "/");
+            request.Content = new System.Net.Http.StringContent("test", System.Text.Encoding.ASCII, "application/json");
+            request.Content.Headers.Allow.Add("GET");
+            request.Content.Headers.Allow.Add("POST");
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            mock.SetupPost<string>("/", x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", x => x == "test").ReturnsAsync(201);
+
+            var result = await mock.Object.SendAsync(request);
+
+            Assert.Equal(201, (int)result.StatusCode);
+        }
     }
 }

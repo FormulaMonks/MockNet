@@ -77,7 +77,7 @@ namespace MockNet.Http
 
             if (request.HeadersValidator is Delegate)
             {
-                var headers = new HttpRequestHeaders(message.Headers);
+                var headers = new HttpRequestHeaders(message.Headers, message.Content?.Headers);
                 var b = request.HeadersValidator.DynamicInvoke(headers);
                 if (b is false)
                 {
