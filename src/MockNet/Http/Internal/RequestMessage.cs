@@ -24,7 +24,7 @@ namespace MockNet.Http
             [typeof(FormUrlEncodedContent)] = x => x.Content.ToFormUrlEncodedContentAsync(),
         };
 
-        private readonly LambdaExpression expression;
+        //private readonly LambdaExpression expression;
         private readonly MockHttpClient mock;
 
         public HttpMethod HttpMethod { get; set; }
