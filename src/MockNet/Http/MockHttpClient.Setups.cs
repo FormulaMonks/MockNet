@@ -23,13 +23,13 @@ namespace MockNet.Http
             return MockHttpClient.Setup(this, request);
         }
 
-        public ISetup Setup<T>(HttpMethod method, string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<T, bool>> content)
+        public ISetup Setup<TBody>(HttpMethod method, string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<TBody, bool>> content)
         {
-            var request = new RequestMessage(this, method, uri, headers, content, typeof(T))
+            var request = new RequestMessage(this, method, uri, headers, content, typeof(TBody))
             {
                 HttpMethod = method,
                 RequestUri = uri,
-                ContentType = typeof(T),
+                ContentType = typeof(TBody),
             };
 
             return MockHttpClient.Setup(this, request);

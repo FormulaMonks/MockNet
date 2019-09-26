@@ -15,7 +15,7 @@ namespace MockNet.Http
             return Setup(HttpMethod.Put, uri, headers);
         }
 
-        public ISetup SetupPut<T>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<T, bool>> content)
+        public ISetup SetupPut<TBody>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<TBody, bool>> content)
         {
             return Setup(HttpMethod.Put, uri, headers, content);
         }
