@@ -24,7 +24,7 @@ namespace MockNet.Http
         internal HttpRequestHeaders(SystemHttpRequestHeaders store, SystemHttpContentHeaders contentHeadersStore)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
-            this.contentHeadersStore = contentHeadersStore ?? throw new ArgumentNullException(nameof(contentHeadersStore));
+            this.contentHeadersStore = contentHeadersStore;
         }
 
         internal SystemHttpRequestHeaders Store => store as SystemHttpRequestHeaders;
