@@ -42,48 +42,65 @@ namespace MockNet.Http
             return value.Contains(item);
         }
 
-        public static bool In<T>(IEnumerable<T> value, IEnumerable<T> item)
+        public static bool In<T>(IEnumerable<T> value, params T[] item)
         {
-            return !value.Except(item).Any();
+            return !item.Except(value).Any();
         }
 
-        // public static bool NotIn<T>(IEnumerable<T> value, T item)
-        // {
-        //     return !value.Contains(item);
-        // }
+        public static bool NotIn<T>(IEnumerable<T> value, T item)
+        {
+            return !value.Contains(item);
+        }
 
-        // public static bool NotIn<T>(IEnumerable<T> value, IEnumerable<T> item)
-        // {
-        //     return !item.Except(value).Any();
-        // }
+        public static bool NotIn<T>(IEnumerable<T> value, params T[] item)
+        {
+            return item.Except(value).Any();
+        }
 
-        // public static bool Sequence<T>(IEnumerable<T> value, IEnumerable<T> item)
-        // {
-        //     return value.SequenceEqual(item);
-        // }
+        public static bool Sequence<T>(IEnumerable<T> value, params T[] item)
+        {
+            return value.SequenceEqual(item);
+        }
 
-        // public static bool Match(string value, string regex)
-        // {
-        //     if (string.IsNullOrWhiteSpace(regex))
-        //     {
-        //         throw new ArgumentNullException(nameof(regex));
-        //     }
+        public static bool Match(string value, string regex)
+        {
+            if (string.IsNullOrWhiteSpace(regex))
+            {
+                throw new ArgumentNullException(nameof(regex));
+            }
 
-        //     var re = new Regex(regex);
+            var re = new Regex(regex);
 
-        //     return value != null && re.IsMatch(value);
-        // }
+            return value != null && re.IsMatch(value);
+        }
 
-        // public static bool Match(string value, string regex, RegexOptions options)
-        // {
-        //     if (string.IsNullOrWhiteSpace(regex))
-        //     {
-        //         throw new ArgumentNullException(nameof(regex));
-        //     }
+        public static bool Match(string value, string regex, RegexOptions options)
+        {
+            if (string.IsNullOrWhiteSpace(regex))
+            {
+                throw new ArgumentNullException(nameof(regex));
+            }
 
-        //     var re = new Regex(regex, options);
+            var re = new Regex(regex, options);
 
-        //     return value != null && re.IsMatch(value);
-        // }
+            return value != null && re.IsMatch(value);
+        }
+
+        public static bool InRange<T>(T value, T from, T to) where T : IComparable => InRange(value, from, to, RangeType.Inclusive);
+
+        public static bool InRange<T>(T value, T from, T to, RangeType range) where T : IComparable
+        {
+            if (value == null)
+            {
+                return false;
+            }
+
+            if (range == RangeType.Exclusive)
+            {
+                return value.CompareTo(from) > 0 && value.CompareTo(to) < 0;
+            }
+
+            return value.CompareTo(from) >= 0 && value.CompareTo(to) <= 0;
+        }
     }
 }

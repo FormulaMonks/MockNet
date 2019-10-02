@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -21,14 +22,18 @@ namespace MockNet.Http
 
         public static IEnumerable<T> In<T>(params T[] item) => default;
 
-        // public static IEnumerable<T> NotIn<T>(T item) => default;
+        public static IEnumerable<T> NotIn<T>(T item) => default;
 
-        // public static IEnumerable<T> NotIn<T>(params T[] item) => default;
+        public static IEnumerable<T> NotIn<T>(params T[] item) => default;
 
-        //public static IEnumerable<T> Sequence<T>(params T[] item) => default;
+        public static IEnumerable<T> Sequence<T>(params T[] item) => default;
 
-        // public static string Match(string regex) => default;
+        public static string Match(string regex) => default;
 
-        // public static string Match(string regex, RegexOptions options) => default;
+        public static string Match(string regex, RegexOptions options) => default;
+
+        public static T InRange<T>(T from, T to) where T : IComparable => default;
+
+        public static T InRange<T>(T from, T to, RangeType range) where T : IComparable => default;
     }
 }

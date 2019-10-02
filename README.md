@@ -1,15 +1,14 @@
-Is.Any() ->         Moq.It.IsAny<>()            A<>.IsNull()
-Is.Match(x => ) ->  Moq.It.Is<>(x => )
-Is.Equal() ->                                   A<>.IsEqualTo()
-Is.Equal([]) ->                                 A<>.IsSameSequenceAs()
-Is.SameAs() ->                                  A<>.IsSameAs()
-Is.Empty() ->                                   A<>.IsEmpty()
-Is.NotNull() ->     Moq.It.IsNotNull<>()        A<>.IsNotNull()
-Is.In() ->          Moq.It.IsIn<T>()
-Is.NotIn() ->       Moq.It.IsNotIn<T>()
-Is.Contains([]) ->                              A<>.Contains()
-Is.InRange() ->     Moq.It.IsInRange<T>()
-Is.Regex() ->       Moq.It.IsRegex()
+[*] Is.Any() ->         Moq.It.IsAny<>()            A<>.IsNull()
+- [] Is.Match(x => ) ->  Moq.It.Is<>(x => )
+[*] Is.Equal() ->                                   A<>.IsEqualTo()
+[*] Is.Sequence([]) ->                               A<>.IsSameSequenceAs()
+[*] Is.SameAs() ->                                  A<>.IsSameAs()
+[*] Is.Empty() ->                                   A<>.IsEmpty()
+[*] Is.NotNull() ->     Moq.It.IsNotNull<>()        A<>.IsNotNull()
+[*] Is.In() ->          Moq.It.IsIn<T>()             A<>.Contains()
+[*] Is.NotIn() ->       Moq.It.IsNotIn<T>()
+[*] Is.InRange() ->     Moq.It.IsInRange<T>()
+[*] Is.Regex() ->       Moq.It.IsRegex()
 
 
 string
@@ -58,3 +57,4 @@ Left to do:
     - http[s]://.../path != http[-s]://.../path
 [] `low` handle MultipartContent & MultipartFormDataContent
 [*] `high` add content header to the header validation
+[] `low` change name of MockNet.Tests to MockNet.Http.Tests

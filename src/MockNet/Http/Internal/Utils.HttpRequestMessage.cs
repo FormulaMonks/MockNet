@@ -13,7 +13,6 @@ namespace MockNet.Http
             {
                 var sb = new StringBuilder();
 
-
                 sb.AppendLine()
                     .AppendLine()
                     .AppendLine($"{request.Method} {request.RequestUri}")
