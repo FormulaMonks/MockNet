@@ -9,6 +9,8 @@ namespace MockNet.Http
 {
     internal class RequestMessage
     {
+        private static ExpressionVisitor visitor = new IsExpressionVisitor();
+
         private static Dictionary<Type, Func<SystemHttpRequestMessage, Task<object>>> deserializers => new Dictionary<Type, Func<SystemHttpRequestMessage, Task<object>>>()
         {
             [typeof(string)] = x => x.Content.ToStringAsync(),
@@ -24,14 +26,15 @@ namespace MockNet.Http
             [typeof(FormUrlEncodedContent)] = x => x.Content.ToFormUrlEncodedContentAsync(),
         };
 
-        //private readonly LambdaExpression expression;
         private readonly MockHttpClient mock;
 
-        public HttpMethod HttpMethod { get; set; }
-        public string RequestUri { get; set; }
-        public Delegate HeadersValidator;
-        public Delegate ContentValidator;
-        public Type ContentType { get; set; }
+        public HttpMethod HttpMethod { get;}
+        public string RequestUri { get; }
+        public Expression Headers { get; }
+        public Delegate HeadersValidator { get; }
+        public Expression Content { get; }
+        public Delegate ContentValidator { get; }
+        public Type ContentType { get; }
 
         public Func<SystemHttpRequestMessage, Task<object>> Deserializer;
 
@@ -40,8 +43,11 @@ namespace MockNet.Http
             this.mock = mock;
             HttpMethod = method;
             RequestUri = uri;
-            HeadersValidator = headers?.Compile();
-            ContentValidator = content?.Compile();
+            Headers = headers;
+            Content = content;
+
+            HeadersValidator = visit(visitor, headers)?.Compile();
+            ContentValidator = visit(visitor, content)?.Compile();
             ContentType = contentType;
 
             if (deserializers.ContainsKey(contentType))
@@ -52,6 +58,8 @@ namespace MockNet.Http
             {
                 Deserializer = new Func<SystemHttpRequestMessage, Task<object>>(x => x.Content.ToObjectAsync(contentType));
             }
+
+            LambdaExpression visit(ExpressionVisitor v, LambdaExpression e) => v.Visit(e) as LambdaExpression;
         }
     }
 }

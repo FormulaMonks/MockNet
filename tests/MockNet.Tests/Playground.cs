@@ -190,6 +190,22 @@ namespace MockNet.Http.Tests
         }
 
         [Fact]
+        public async Task TestRequestMessageWithIs()
+        {
+            var mock = new MockHttpClient();
+
+            var request = new SystemHttpRequestMessage(HttpMethod.Post, "/");
+            request.Content = new System.Net.Http.StringContent("test");
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            mock.SetupPost<StringContent>("/", x => x.Accept == Is.Equal("application/json"), x => x == Is.Any<StringContent>()).ReturnsAsync(201);
+
+            var result = await mock.Object.SendAsync(request);
+
+            Assert.Equal(201, (int)result.StatusCode);
+        }
+
+        [Fact]
         public async Task TestContentHeaders()
         {
             var mock = new MockHttpClient();
