@@ -79,6 +79,7 @@ namespace MockNet.Http
 
         public static bool operator ==(StreamContent header, Stream value)
         {
+            // TODO: implement stream comparison
             // return StreamCompare.CompareAsync(header.content, value).GetAwaiter().GetResult();
             return false;
         }
@@ -88,5 +89,9 @@ namespace MockNet.Http
         public static bool operator ==(Stream value, StreamContent header) => (header == value);
 
         public static bool operator !=(Stream value, StreamContent header)  => !(header == value);
+
+        public static bool operator ==(StreamContent s1, StreamContent s2) => (s1 == s2.content);
+
+        public static bool operator !=(StreamContent s1, StreamContent s2)  => !(s1 == s2.content);
     }
 }

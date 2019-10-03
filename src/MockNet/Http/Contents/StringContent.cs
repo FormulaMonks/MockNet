@@ -90,11 +90,8 @@ namespace MockNet.Http
 
         public static bool operator !=(string value, StringContent content) => !(content == value);
 
-        public static bool operator ==(StringContent c1, StringContent c2)
-        {
-            return c1?.value == c2?.value;
-        }
+        public static bool operator ==(StringContent s1, StringContent s2) => (s1 == s2.value);
 
-        public static bool operator !=(StringContent c1, StringContent c2) => !(c1 == c2);
+        public static bool operator !=(StringContent s1, StringContent s2) => !(s1 == s2.value);
     }
 }
