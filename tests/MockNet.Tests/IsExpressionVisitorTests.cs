@@ -373,6 +373,30 @@ namespace MockNet.Http.Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("application/json")]
+        public void TestIsExpressionVisitorForNotEqualToAny(string parameter)
+        {
+            Expression<Func<MediaTypeHeaderValue, bool>> expr = x => x != Is.Any<string>();
+
+            var visitor = new IsExpressionVisitor();
+            var result = visitor.Visit(expr);
+
+            Assert.Equal("x => Not(Any(x))", result.ToString());
+
+            MediaTypeHeaderValue header = null;
+
+            if (parameter != null && parameter != "")
+            {
+                header = parameter;
+            }
+
+            var actual = Invoke(result, header);
+
+            Assert.True(actual is false);
+        }
+
         private object Invoke(Expression expression, params object[] parameters)
         {
             if (expression is LambdaExpression func)

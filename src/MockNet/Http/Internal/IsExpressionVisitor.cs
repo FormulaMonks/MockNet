@@ -26,17 +26,27 @@ namespace MockNet.Http
 
         private static Dictionary<string, Func<MethodCallExpression, BinaryExpression, Expression>> make = new Dictionary<string, Func<MethodCallExpression, BinaryExpression, Expression>>()
         {
-            [nameof(Is.Any)] = (c, n) => Make(c.Method, n.Left),
-            [nameof(Is.NotNull)] = (c, n) => Make(c.Method, n.Left),
-            [nameof(Is.Empty)] = (c, n) => Make(c.Method, n.Left),
-            [nameof(Is.SameAs)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.Equal)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.In)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.NotIn)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.Sequence)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.Match)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
-            [nameof(Is.InRange)] = (c, n) => Make(c.Method, n.Left, c.Arguments),
+            [nameof(Is.Any)] = (c, n) => Make(c.Method, n.Left, Not(n.NodeType)),
+            [nameof(Is.NotNull)] = (c, n) => Make(c.Method, n.Left, Not(n.NodeType)),
+            [nameof(Is.Empty)] = (c, n) => Make(c.Method, n.Left, Not(n.NodeType)),
+            [nameof(Is.SameAs)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.Equal)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.In)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.NotIn)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.Sequence)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.Match)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
+            [nameof(Is.InRange)] = (c, n) => Make(c.Method, n.Left, c.Arguments, Not(n.NodeType)),
         };
+
+        private static Func<Expression, Expression> Not(ExpressionType nodeType)
+        {
+            if (nodeType == ExpressionType.NotEqual)
+            {
+                return x => Expression.Not(x);
+            }
+
+            return x => x;
+        }
 
         private static Dictionary<string, Func<MethodInfo, Type[], Type[]>> generics = new Dictionary<string, Func<MethodInfo, Type[], Type[]>>()
         {
@@ -56,7 +66,7 @@ namespace MockNet.Http
                 .Select(x => (x.Method, x.Parameters.FirstOrDefault(), x.Parameters.SecondOrDefault(), x.Parameters.NthOrDefault(3), x.Parameters.NthOrDefault(4)))
                 .ToArray();
 
-        private static Expression Make(MethodInfo call, Expression parameter)
+        private static Expression Make(MethodInfo call, Expression parameter, Func<Expression, Expression> not)
         {
             if (parameter.NodeType == ExpressionType.Convert && parameter is UnaryExpression unary)
             {
@@ -65,10 +75,10 @@ namespace MockNet.Http
 
             var method = GetMethod(call, new[] { parameter.Type });
 
-            return Expression.Call(method, parameter);
+            return not(Expression.Call(method, parameter));
         }
 
-        private static Expression Make(MethodInfo call, Expression parameter, ReadOnlyCollection<Expression> expressions)
+        private static Expression Make(MethodInfo call, Expression parameter, ReadOnlyCollection<Expression> expressions, Func<Expression, Expression> not)
         {
             var args = expressions.ToList();
 
@@ -76,7 +86,7 @@ namespace MockNet.Http
 
             var method = GetMethod(call, new[] { parameter.Type });
 
-            return Expression.Call(method, args.ToArray());
+            return not(Expression.Call(method, args.ToArray()));
         }
 
         private static MethodInfo GetMethod(MethodInfo call, Type[] typeArguments)
