@@ -15,7 +15,7 @@ namespace MockNet.Http
         public static HttpMethod Put => SystemHttpMethod.Put;
         public static HttpMethod Trace => SystemHttpMethod.Trace;
 
-        public string Method => method;
+        internal string Method => method;
 
         public HttpMethod(string method)
         {
@@ -23,7 +23,7 @@ namespace MockNet.Http
             this.httpMethod = new SystemHttpMethod(method);
         }
 
-        public int DefaultStatusCode()
+        internal int DefaultStatusCode()
         {
             switch (method)
             {
