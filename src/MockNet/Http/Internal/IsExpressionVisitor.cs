@@ -4,9 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MockNet.Tests")]
 namespace MockNet.Http
 {
     internal class IsExpressionVisitor : ExpressionVisitor

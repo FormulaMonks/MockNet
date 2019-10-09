@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using SystemHttpClient = System.Net.Http.HttpClient;
 
+[assembly: InternalsVisibleTo("MockNet.Tests")]
 namespace MockNet.Http
 {
     public partial class MockHttpClient
