@@ -15,6 +15,11 @@ namespace MockNet.Http
                 return JsonConvert.DeserializeObject(json, type);
             }
 
+            public static string ToString(object json)
+            {
+                return JsonConvert.SerializeObject(json);
+            }
+
             public static Dictionary<string, string> ToDictionary(string json)
             {
                 if (string.IsNullOrWhiteSpace(json))
@@ -23,7 +28,7 @@ namespace MockNet.Http
                 return ToObject(JToken.Parse(json)) as Dictionary<string, string>;
             }
 
-            static object ToObject(JToken token)
+            private static object ToObject(JToken token)
             {
                 if (token == null) return null;
 
