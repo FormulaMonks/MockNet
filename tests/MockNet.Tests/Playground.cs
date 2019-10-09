@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
@@ -239,6 +240,37 @@ namespace MockNet.Http.Tests
             var result = await mock.Object.SendAsync(request);
 
             Assert.Equal(201, (int)result.StatusCode);
+        }
+
+        [Fact]
+        public async Task TestRequestMessageWithObject()
+        {
+            var mock = new MockHttpClient();
+
+            var employee = new Employee()
+            {
+                Id = 1,
+                Name = "John Smith"
+            };
+
+            mock.SetupPost<Employee>("/employees", x => true, x => x.Name == Is.NotNull<string>()).ReturnsAsync(201);
+
+            var content = new System.Net.Http.StringContent(Utils.Json.ToString(employee), System.Text.Encoding.ASCII, "application/json");
+
+            var result = await mock.Object.PostAsync("/employees", content);
+
+            Assert.Equal(201, (int)result.StatusCode);
+        }
+
+        class Employee
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        class Company
+        {
+            public IEnumerable<Employee> Employees { get; set; }
         }
     }
 }
