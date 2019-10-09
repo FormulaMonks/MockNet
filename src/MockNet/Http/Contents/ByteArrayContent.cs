@@ -75,9 +75,7 @@ namespace MockNet.Http
 
         public static bool operator ==(ByteArrayContent content, byte[] bytes)
         {
-            // TODO: implement byte array comparison.
-            // return MemoryCompare.Compare(content.content, 0, bytes, 0, 0);
-            return false;
+            return Utils.Comparer.ByteArray(content.content, 0, bytes, 0, content.content.Length);
         }
 
         public static bool operator !=(ByteArrayContent content, byte[] bytes) => !(content == bytes);
