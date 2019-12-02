@@ -36,19 +36,19 @@ namespace MockNet.Http
         public IEnumerator<Result> GetEnumerator()
         {
             // Take local copies of collection and count so they are isolated from changes by other threads.
-			Result[] collection;
-			int count;
+            Result[] collection;
+            int count;
 
-			lock (results)
-			{
-				collection = results.ToArray();
-				count = collection.Count();
-			}
+            lock (results)
+            {
+                collection = results.ToArray();
+                count = collection.Count();
+            }
 
-			for (var i = 0; i < count; i++)
-			{
-				yield return collection[i];
-			}
+            for (var i = 0; i < count; i++)
+            {
+                yield return collection[i];
+            }
         }
     }
 }

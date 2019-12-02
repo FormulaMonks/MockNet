@@ -36,8 +36,9 @@ namespace MockNet.Http
                 {
                     case JTokenType.Object:
                         return token.Children<JProperty>()
-                                    .ToDictionary(prop => prop.Name,
-                                                  prop => ToObject(prop.Value));
+                            .ToDictionary(
+                                prop => prop.Name,
+                                prop => ToObject(prop.Value));
 
                     case JTokenType.Array:
                         return token.Select(ToObject).ToList();

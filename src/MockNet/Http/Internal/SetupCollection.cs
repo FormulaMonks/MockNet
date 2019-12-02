@@ -48,19 +48,19 @@ namespace MockNet.Http
         public IEnumerator<Setup> GetEnumerator()
         {
             // Take local copies of collection and count so they are isolated from changes by other threads.
-			Setup[] collection;
-			int count;
+            Setup[] collection;
+            int count;
 
-			lock (setups)
-			{
-				collection = setups.ToArray();
-				count = collection.Count();
-			}
+            lock (setups)
+            {
+                collection = setups.ToArray();
+                count = collection.Count();
+            }
 
-			for (var i = 0; i < count; i++)
-			{
-				yield return collection[i];
-			}
+            for (var i = 0; i < count; i++)
+            {
+                yield return collection[i];
+            }
         }
     }
 }

@@ -27,14 +27,14 @@ namespace MockNet.Http
 
 
 
-		public static StringBuilder TrimEnd(this StringBuilder sb)
-		{
-			while (char.IsWhiteSpace(sb[sb.Length - 1]))
-			{
-				--sb.Length;
-			}
+        public static StringBuilder TrimEnd(this StringBuilder sb)
+        {
+            while (char.IsWhiteSpace(sb[sb.Length - 1]))
+            {
+                --sb.Length;
+            }
             
-			return sb;
-		}
+            return sb;
+        }
     }
 }

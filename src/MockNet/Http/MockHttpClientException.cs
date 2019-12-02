@@ -12,76 +12,76 @@ namespace MockNet.Http
         internal static async Task<MockHttpClientException> NoSetupAsync(SystemHttpRequestMessage request)
         {
             return new MockHttpClientException(
-				string.Format(
-					CultureInfo.CurrentCulture,
-					@"{0} request failed.
+                string.Format(
+                    CultureInfo.CurrentCulture,
+                    @"{0} request failed.
 {1}",
-					await Utils.HttpRequestMessage.ToStringAsync(request),
-					"All requests on the mock must have a corresponding setup."));
+                    await Utils.HttpRequestMessage.ToStringAsync(request),
+                    "All requests on the mock must have a corresponding setup."));
         }
 
         internal static async Task<MockHttpClientException> NoMatchingRequestsAsync(SystemHttpRequestMessage request)
         {
             return new MockHttpClientException(
-				string.Format(
-					CultureInfo.CurrentCulture,
-					@"{0}
+                string.Format(
+                    CultureInfo.CurrentCulture,
+                    @"{0}
 {1}",
-					await Utils.HttpRequestMessage.ToStringAsync(request),
-					"No requests found."));
+                    await Utils.HttpRequestMessage.ToStringAsync(request),
+                    "No requests found."));
         }
 
         internal static async Task<MockHttpClientException> NoMatchingResponses(SystemHttpRequestMessage request)
         {
             return new MockHttpClientException(
-				string.Format(
-					CultureInfo.CurrentCulture,
-					@"{0} request failed.
+                string.Format(
+                    CultureInfo.CurrentCulture,
+                    @"{0} request failed.
 {1}",
-					await Utils.HttpRequestMessage.ToStringAsync(request),
-					"All requests on the mock must have a corresponding setup."));
+                    await Utils.HttpRequestMessage.ToStringAsync(request),
+                    "All requests on the mock must have a corresponding setup."));
         }
 
         internal static async Task<MockHttpClientException> MatchedMultipleRequests(SystemHttpRequestMessage request, int requestCount)
         {
             return new MockHttpClientException(
-				string.Format(
-					CultureInfo.CurrentCulture,
-					"Expected request on the mock once, but found {0} : {1}",
-					requestCount,
-					await Utils.HttpRequestMessage.ToStringAsync(request)));
+                string.Format(
+                    CultureInfo.CurrentCulture,
+                    "Expected request on the mock once, but found {0} : {1}",
+                    requestCount,
+                    await Utils.HttpRequestMessage.ToStringAsync(request)));
         }
 
         internal static MockHttpClientException UnmatchedResult(Result result)
         {
             return new MockHttpClientException(
-				string.Format(
-					CultureInfo.CurrentCulture,
-					@"{0}:
+                string.Format(
+                    CultureInfo.CurrentCulture,
+                    @"{0}:
 This setup was not matched.",
-					result));
+                    result));
         }
 
         internal static MockHttpClientException Combined(IEnumerable<MockHttpClientException> errors, string preamble = null)
-		{
-			var message = new StringBuilder();
+        {
+            var message = new StringBuilder();
 
-			if (preamble is string)
-			{
-				message.Append(preamble)
+            if (preamble is string)
+            {
+                message.Append(preamble)
                     .AppendLine()
-				    .AppendLine();
-			}
+                    .AppendLine();
+            }
 
-			foreach (var error in errors)
-			{
-				message.Append(error.Message)
+            foreach (var error in errors)
+            {
+                message.Append(error.Message)
                     .AppendLine()
-				    .AppendLine();
-			}
+                    .AppendLine();
+            }
 
-			return new MockHttpClientException(message.ToString());
-		}
+            return new MockHttpClientException(message.ToString());
+        }
 
 
         internal string Reason { get; }
