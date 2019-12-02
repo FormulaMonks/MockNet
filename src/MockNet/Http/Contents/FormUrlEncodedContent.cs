@@ -51,6 +51,8 @@ namespace MockNet.Http
             {
                 if (obj is SystemFormUrlEncodedContent content)
                 {
+                    // TODO: implement the object comparison
+                    
                     //var collection = Utils.Json.ToDictionary(content.ReadAsStringAsync().GetAwaiter().GetResult()) as Dictionary<string, string>;
 
                     //return equals(this, collection);
