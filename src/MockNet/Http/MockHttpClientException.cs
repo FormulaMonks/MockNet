@@ -14,8 +14,7 @@ namespace MockNet.Http
             return new MockHttpClientException(
                 string.Format(
                     CultureInfo.CurrentCulture,
-                    @"{0} request failed.
-{1}",
+                    @"{0} request failed.\n{1}",
                     await Utils.HttpRequestMessage.ToStringAsync(request),
                     "All requests on the mock must have a corresponding setup."));
         }
@@ -25,8 +24,7 @@ namespace MockNet.Http
             return new MockHttpClientException(
                 string.Format(
                     CultureInfo.CurrentCulture,
-                    @"{0}
-{1}",
+                    @"{0}\n{1}",
                     await Utils.HttpRequestMessage.ToStringAsync(request),
                     "No requests found."));
         }
@@ -36,8 +34,7 @@ namespace MockNet.Http
             return new MockHttpClientException(
                 string.Format(
                     CultureInfo.CurrentCulture,
-                    @"{0} request failed.
-{1}",
+                    @"{0} request failed.\n{1}",
                     await Utils.HttpRequestMessage.ToStringAsync(request),
                     "All requests on the mock must have a corresponding setup."));
         }
@@ -57,8 +54,7 @@ namespace MockNet.Http
             return new MockHttpClientException(
                 string.Format(
                     CultureInfo.CurrentCulture,
-                    @"{0}:
-This setup was not matched.",
+                    @"{0}:\nThis setup was not matched.",
                     result));
         }
 
