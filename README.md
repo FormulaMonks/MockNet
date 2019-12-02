@@ -1,60 +1,90 @@
-[*] Is.Any() ->         Moq.It.IsAny<>()            A<>.IsNull()
-- [] Is.Match(x => ) ->  Moq.It.Is<>(x => )
-[*] Is.Equal() ->                                   A<>.IsEqualTo()
-[*] Is.Sequence([]) ->                               A<>.IsSameSequenceAs()
-[*] Is.SameAs() ->                                  A<>.IsSameAs()
-[*] Is.Empty() ->                                   A<>.IsEmpty()
-[*] Is.NotNull() ->     Moq.It.IsNotNull<>()        A<>.IsNotNull()
-[*] Is.In() ->          Moq.It.IsIn<T>()             A<>.Contains()
-[*] Is.NotIn() ->       Moq.It.IsNotIn<T>()
-[*] Is.InRange() ->     Moq.It.IsInRange<T>()
-[*] Is.Regex() ->       Moq.It.IsRegex()
+# MockNet.Http
 
+The package provides a friendly mocking framework to unit test the
+System.Net.Http namespace. Works with any .NET unit testing and mocking library.
 
-string
-StringContent
-----
-ReadAsStringAsync()
+## Examples:
 
+A quick and simple example. This sample mocks a call to the
+`https://jsonplaceholder.typeicode.com/todos/1` resource to return a status code
+of 201 Created.
 
-byte[]
-ByteArrayContent
----
-ReadAsByteArrayAsync()
+``` csharp
+using MockNet.Http;
+using Xunit; // used here for Asserting.
 
-convert: x == bytes or x == That.Is(bytes) into MemoryCompare.Compare(x, bytes)
+...
 
-StreamContent
-Stream
----
-ReadAsStreamAsync()
+var mock = new MockHttpClient();
 
-convert: x == stream or x == That.Is(bytes) into StreamCompare.Compare(x, stream);
+mock.SetupGet("/todos/1").ReturnsAsync(201);
 
+var result = await mock.Object.GetAsync("/todos/1");
 
+Assert.Equal(201, (int)result.StatusCode);
+```
 
-FormUrlEncodedContent
-IDictionary<string, string>
-IEnumerable<KeyValuePair<string, string>>
----
-Utils.Json.ToDictionary<string, string>()
+Lets look at are more real life example:
 
-All others:
----
-Utils.Json.ToObject<T>()
+``` csharp
+using MockNet.Http;
+using Xunit;
 
+...
 
+public class Todo {
+    public int UserId { get; set; }
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public bool Completed { get; set; }
+}
 
+...
 
-Left to do:
+public class TodoService {
+    private System.Net.Http.HttpClient _httpClient;
+    
+    public TodoService(System.Net.Http.HttpClient httpClient) {
+        this._httpClient = httpClient;
+    }
+    
+    public async Task<Todo> GetAsync(int id) {
+        var response = await this._httpClient.GetAsync($"/todos/{id}");
+        
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
 
-[] `medium` Expression Visitor to enable things like Is.XXX
-[*] `high` Exception messages
-[*] `high` Response Headers
-[] `low` add better support to match on request uri
-    - / == http[s]://.../
-    - /test == http[s]://.../test
-    - http[s]://.../path != http[-s]://.../path
-[] `low` handle MultipartContent & MultipartFormDataContent
-[*] `high` add content header to the header validation
-[] `low` change name of MockNet.Tests to MockNet.Http.Tests
+            return JsonConvert.DeserializeObject<Todo>(json);
+        }
+
+        throw new Exception("NotFound");
+    }
+}
+
+...
+
+[Fact]
+public async Task GetAsync_should_return_expected_todoAsync() {
+    var mock = new MockHttpClient();
+    var service = new TodoService(mock.Object);
+
+    var expected = new Todo {
+        Id = 123,
+        UserId = 456,
+        Title = "go shopping",
+        Completed = false,
+    };
+
+    var resultingContent = new StringContent(JsonConvert.SerializeObject(expected));
+
+    mock.SetupGet("/todos/1").ReturnsAsync(201, resultingContent);
+
+    var actual = await service.GetAsync(1);
+
+    Assert.Equal(expected.Id, actual.Id);
+    Assert.Equal(expected.UserId, actual.UserId);
+    Assert.Equal(expected.Title, actual.Title);
+    Assert.Equal(expected.Completed, actual.Completed);
+}
+```
