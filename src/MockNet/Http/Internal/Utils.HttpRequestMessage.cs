@@ -20,14 +20,14 @@ namespace MockNet.Http
                     .AppendHeaders(request.Content?.Headers)
                     .AppendLine();
 
-                    if (request.Content is SystemHttpContent)
-                    {
-                        var content = await request.Content?.ReadAsStringAsync();
+                if (request.Content is SystemHttpContent)
+                {
+                    var content = await request.Content?.ReadAsStringAsync();
 
-                        sb.AppendContent(content);
-                    }
+                    sb.AppendContent(content);
+                }
 
-                    sb.TrimEnd().AppendLine();
+                sb.TrimEnd().AppendLine();
 
                 return sb.ToString();
             }
