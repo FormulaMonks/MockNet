@@ -20,7 +20,7 @@ namespace MockNet.Http.Tests
         public async Task StringAsync()
         {
             var mock = new MockHttpClient();
-            mock.Setup<string>(HttpMethod.Post, "/", x => true, x => x == "test").ReturnsAsync(201);
+            mock.Setup<string>(HttpMethod.Post, "/", content: x => x == "test").ReturnsAsync(201);
             var result = await mock.Object.PostAsync("/", new StringContent("test"));
         }
 
@@ -30,7 +30,7 @@ namespace MockNet.Http.Tests
             var mock = new MockHttpClient();
             var expected = 201;
 
-            mock.Setup<StringContent>(HttpMethod.Post, "/", x => true, x => x == "test").ReturnsAsync(expected);
+            mock.Setup<StringContent>(HttpMethod.Post, "/", content: x => x == "test").ReturnsAsync(expected);
             var result = await mock.Object.PostAsync("/", new StringContent("test"));
 
             Assert.Equal(expected, (int)result.StatusCode);
@@ -42,7 +42,7 @@ namespace MockNet.Http.Tests
             var mock = new MockHttpClient();
             var expected = new StringContent("result");
 
-            mock.Setup<StringContent>(HttpMethod.Post, "/", x => true, x => x == "test").ReturnsAsync(expected);
+            mock.Setup<StringContent>(HttpMethod.Post, "/", content: x => x == "test").ReturnsAsync(expected);
             var result = await mock.Object.PostAsync("/", new StringContent("test"));
 
             var actual = await result.Content.ReadAsStringAsync();
@@ -57,7 +57,7 @@ namespace MockNet.Http.Tests
             var first = new StringContent("result");
             var second = 201;
 
-            mock.Setup<StringContent>(HttpMethod.Post, "/", x => true, x => x == "test")
+            mock.Setup<StringContent>(HttpMethod.Post, "/", content: x => x == "test")
                 .ReturnsAsync(first)
                 .ReturnsAsync(second);
 
@@ -132,7 +132,7 @@ namespace MockNet.Http.Tests
             var headers = new HttpResponseHeaders();
             headers.AcceptRanges.Add("none");
 
-            mock.SetupGet("/", x => true).ReturnsAsync(headers);
+            mock.SetupGet("/").ReturnsAsync(headers);
 
             var result = await mock.Object.GetAsync("/");
 
@@ -147,7 +147,7 @@ namespace MockNet.Http.Tests
             var headers = new HttpResponseHeaders();
             headers["x-session-id"] = Guid.NewGuid().ToString();
 
-            mock.SetupGet("/", x => true).ReturnsAsync(headers);
+            mock.SetupGet("/").ReturnsAsync(headers);
 
             var result = await mock.Object.GetAsync("/");
 
@@ -165,7 +165,7 @@ namespace MockNet.Http.Tests
             headers.AcceptRanges.Add("bytes");
             headers.Location = new Uri("https://localhost/v1/customers/1");
 
-            mock.SetupGet("/", x => true).ReturnsAsync(headers);
+            mock.SetupGet("/").ReturnsAsync(headers);
 
             var result = await mock.Object.GetAsync("/");
 
@@ -183,7 +183,7 @@ namespace MockNet.Http.Tests
             request.Content = new System.Net.Http.StringContent("test");
             request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            mock.SetupPost<StringContent>("/", x => x.Accept == "application/json", x => x == "test").ReturnsAsync(201);
+            mock.SetupPost<StringContent>("/", headers: x => x.Accept == "application/json", content: x => x == "test").ReturnsAsync(201);
 
             var result = await mock.Object.SendAsync(request);
 
@@ -199,7 +199,7 @@ namespace MockNet.Http.Tests
             request.Content = new System.Net.Http.StringContent("test");
             request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            mock.SetupPost<StringContent>("/", x => x.Accept == Is.Equal("application/json"), x => x == Is.Any<StringContent>()).ReturnsAsync(201);
+            mock.SetupPost<StringContent>("/", headers: x => x.Accept == Is.Equal("application/json"), content: x => x == Is.Any<StringContent>()).ReturnsAsync(201);
 
             var result = await mock.Object.SendAsync(request);
 
@@ -217,7 +217,7 @@ namespace MockNet.Http.Tests
             request.Content.Headers.Allow.Add("POST");
             request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            mock.SetupPost<StringContent>("/", x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", x => x == "test").ReturnsAsync(201);
+            mock.SetupPost<StringContent>("/", headers: x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", content: x => x == "test").ReturnsAsync(201);
 
             var result = await mock.Object.SendAsync(request);
 
@@ -235,7 +235,7 @@ namespace MockNet.Http.Tests
             request.Content.Headers.Allow.Add("POST");
             request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            mock.SetupPost<string>("/", x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", x => x == "test").ReturnsAsync(201);
+            mock.SetupPost<string>("/", headers: x => x.Accept == "application/json" && x.ContentType == "application/json; charset=us-ascii", content: x => x == "test").ReturnsAsync(201);
 
             var result = await mock.Object.SendAsync(request);
 
@@ -253,7 +253,7 @@ namespace MockNet.Http.Tests
                 Name = "John Smith"
             };
 
-            mock.SetupPost<Employee>("/employees", x => true, x => x.Name == Is.NotNull<string>()).ReturnsAsync(201);
+            mock.SetupPost<Employee>("/employees", content: x => x.Name == Is.NotNull<string>()).ReturnsAsync(201);
 
             var content = new System.Net.Http.StringContent(Utils.Json.ToString(employee), System.Text.Encoding.ASCII, "application/json");
 

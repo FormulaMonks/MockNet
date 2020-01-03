@@ -5,17 +5,12 @@ namespace MockNet.Http
 {
     public partial class MockHttpClient
     {
-        public ISetup SetupPut(string uri)
-        {
-            return Setup(HttpMethod.Put, uri);
-        }
-
-        public ISetup SetupPut(string uri, Expression<Func<HttpRequestHeaders, bool>> headers)
+        public ISetup SetupPut(string uri, Expression<Func<HttpRequestHeaders, bool>> headers = null)
         {
             return Setup(HttpMethod.Put, uri, headers);
         }
 
-        public ISetup SetupPut<TBody>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<TBody, bool>> content)
+        public ISetup SetupPut<TBody>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers = null, Expression<Func<TBody, bool>> content = null)
         {
             return Setup(HttpMethod.Put, uri, headers, content);
         }
