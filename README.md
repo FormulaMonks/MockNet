@@ -1,3 +1,6 @@
+![.NET Core](https://github.com/citrusbyte/MockNet/workflows/.NET%20Core/badge.svg?branch=master) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # MockNet.Http
 
 The package provides a friendly mocking framework to unit test the
@@ -88,3 +91,18 @@ public async Task GetAsync_should_return_expected_todoAsync() {
     Assert.Equal(expected.Completed, actual.Completed);
 }
 ```
+
+# About Theorem
+
+![Theorem](https://cl.ly/8b0a99ca064a/logo.png)
+
+This software is lovingly maintained and funded by Theorem.
+At Theorem, we specialize in solving difficult computer science problems for startups and the enterprise.
+
+At Theorem we believe in and support open source software.
+* Check out more of our open source software at Theorem Labs.
+* Learn more about [our work](https://theorem.co/portfolio).
+* [Hire us](https://theorem.co/contact-us) to work on your project.
+* [Want to join the team?](http://theorem.co/careers)
+
+*Theorem and the Theorem logo are trademarks or registered trademarks of Theorem, LLC.*
