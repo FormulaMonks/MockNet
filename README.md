@@ -118,6 +118,7 @@ public async Task GetAsync_should_throw_exception()
 For more examples on how to test other HttpClient aspects including testing headers and content body being sent to the
 endpoint as well as headers being returned please see [tests/MockNet.Tests/Playground.cs](https://github.com/citrusbyte/MockNet/blob/master/tests/MockNet.Tests/Playground.cs)
 
+
 # About Theorem
 
 ![Theorem](https://cl.ly/8b0a99ca064a/logo.png)
