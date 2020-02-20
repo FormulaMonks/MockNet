@@ -8,7 +8,7 @@ namespace MockNet.Http
         /// <summary>
         /// Specifices a setup on the HTTP POST protocol.
         /// </summary>
-        /// <param name="uri">The uri to match the setup with.</param>
+        /// <param name="uri">The URI to match the setup with.</param>
         public ISetup SetupPost(string uri)
         {
             return Setup(HttpMethod.Post, uri);
@@ -17,7 +17,7 @@ namespace MockNet.Http
         /// <summary>
         /// Specifies a setup on the HTTP POST protocol.
         /// </summary>
-        /// <param name="uri">The uri to match the setup with.</param>
+        /// <param name="uri">The URI to match the setup with.</param>
         /// <param name="headers">Lambda predicate that specifics the match on headers.</param>
         public ISetup SetupPost(string uri, Expression<Func<HttpRequestHeaders, bool>> headers)
         {
@@ -27,7 +27,7 @@ namespace MockNet.Http
         /// <summary>
         /// Specifies a setup on the HTTP POST protocol.
         /// </summary>
-        /// <param name="uri">The uri to match the setup with.</param>
+        /// <param name="uri">The URI to match the setup with.</param>
         /// <param name="headers">Lambda predicate that specifics the match on headers.</param>
         /// <param name="content">Lambda predicate that specifies the match on content.</param>
         public ISetup SetupPost<TBody>(string uri, Expression<Func<HttpRequestHeaders, bool>> headers, Expression<Func<TBody, bool>> content)
