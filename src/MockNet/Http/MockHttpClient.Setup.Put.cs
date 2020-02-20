@@ -22,7 +22,7 @@ namespace MockNet.Http
         public ISetup SetupPut(string uri, Expression<Func<HttpRequestHeaders, bool>> headers)
         {
             return Setup(HttpMethod.Put, uri, headers);
-                }
+        }
 
         /// <summary>
         /// Specifices a setup on the HTTP PUT protocol.
