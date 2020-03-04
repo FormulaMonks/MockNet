@@ -1,4 +1,4 @@
-![.NET Core](https://github.com/citrusbyte/MockNet/workflows/.NET%20Core/badge.svg?branch=master) 
+![.NET Core](https://github.com/citrusbyte/MockNet/workflows/.NET%20Core/badge.svg?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # MockNet.Http
@@ -27,12 +27,12 @@ var result = await mock.Object.GetAsync("/todos/1");
 Assert.Equal(201, (int)result.StatusCode);
 ```
 
-Lets look at are more real life example:
+Lets look at a more real life example:
 
 Todo model
 
 ``` csharp
-public class Todo 
+public class Todo
 {
     public int UserId { get; set; }
     public int Id { get; set; }
@@ -46,19 +46,19 @@ Service to consume the api
 ``` csharp
 using System.Net.Http;
 
-public class TodoService 
+public class TodoService
 {
     private HtHttpClient _httpClient;
-    
-    public TodoService(HttpClient httpClient) 
+
+    public TodoService(HttpClient httpClient)
     {
         this._httpClient = httpClient;
     }
-    
-    public async Task<Todo> GetAsync(int id) 
+
+    public async Task<Todo> GetAsync(int id)
     {
         var response = await this._httpClient.GetAsync($"/todos/{id}");
-        
+
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync();
@@ -78,12 +78,12 @@ using MockNet.Http;
 using Xunit;
 
 [Fact]
-public async Task GetAsync_should_return_expected_todoAsync() 
+public async Task GetAsync_should_return_expected_todoAsync()
 {
     var mock = new MockHttpClient();
     var service = new TodoService(mock.Object);
 
-    var expected = new Todo 
+    var expected = new Todo
     {
         Id = 123,
         UserId = 456,
@@ -108,9 +108,9 @@ public async Task GetAsync_should_throw_exception()
 {
     var mock = new MockHttpClient();
     var service = new TodoService(mock.object);
-    
+
     mock.SetupGet("/todos/1").ReturnsAsync(404);
-    
+
     await Assert.Throws<Exception>(() => service.GetAsync(1));
 }
 ```
