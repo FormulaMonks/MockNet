@@ -1,6 +1,6 @@
 using SystemRetryConditionHeaderValue = System.Net.Http.Headers.RetryConditionHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class RetryConditionHeaderValue : IHeaderValue<SystemRetryConditionHeaderValue>
     {

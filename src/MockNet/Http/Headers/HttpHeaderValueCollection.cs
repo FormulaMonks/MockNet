@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public sealed class HttpHeaderValueCollection<T> : ICollection<T>
         where T : class

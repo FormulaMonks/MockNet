@@ -1,6 +1,6 @@
 using SystemCacheControlHeaderValue = System.Net.Http.Headers.CacheControlHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class CacheControlHeaderValue : IHeaderValue<SystemCacheControlHeaderValue>
     {

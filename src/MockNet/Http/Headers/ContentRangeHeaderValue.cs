@@ -1,6 +1,6 @@
 using SystemContentRangeHeaderValue = System.Net.Http.Headers.ContentRangeHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class ContentRangeHeaderValue : IHeaderValue<SystemContentRangeHeaderValue>
     {

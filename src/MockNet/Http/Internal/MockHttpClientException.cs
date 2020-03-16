@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class MockHttpClientException : Exception
     {

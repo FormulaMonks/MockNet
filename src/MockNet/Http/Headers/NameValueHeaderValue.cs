@@ -1,6 +1,6 @@
 using SystemNameValueHeaderValue = System.Net.Http.Headers.NameValueHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class NameValueHeaderValue : IHeaderValue<SystemNameValueHeaderValue>
     {

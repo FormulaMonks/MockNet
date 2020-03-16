@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public static class Is
     {

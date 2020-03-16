@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemByteArrayContent = System.Net.Http.ByteArrayContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class ByteArrayContent : IHttpContent
     {

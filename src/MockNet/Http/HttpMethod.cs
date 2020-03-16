@@ -1,6 +1,6 @@
 using SystemHttpMethod = System.Net.Http.HttpMethod;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     /// <summary>
     /// A local helper class that mimics the <see cref="SystemHttpMethod" />. This

@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static partial class Utils
     {

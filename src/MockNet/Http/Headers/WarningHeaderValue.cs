@@ -1,6 +1,6 @@
 using SystemWarningHeaderValue = System.Net.Http.Headers.WarningHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class WarningHeaderValue : IHeaderValue<SystemWarningHeaderValue>
     {

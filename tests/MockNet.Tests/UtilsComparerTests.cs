@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MockNet.Http.Tests
+namespace Theorem.MockNet.Http.Tests
 {
     public class UtilsComparerTests
     {

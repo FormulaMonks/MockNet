@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using SystemHttpClient = System.Net.Http.HttpClient;
 
 [assembly: InternalsVisibleTo("MockNet.Tests")]
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public partial class MockHttpClient
     {

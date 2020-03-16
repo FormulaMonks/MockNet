@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static class IsInternal
     {

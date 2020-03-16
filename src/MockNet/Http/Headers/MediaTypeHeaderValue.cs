@@ -1,6 +1,6 @@
 using SystemMediaTypeHeaderValue = System.Net.Http.Headers.MediaTypeHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class MediaTypeHeaderValue : IHeaderValue<SystemMediaTypeHeaderValue>
     {

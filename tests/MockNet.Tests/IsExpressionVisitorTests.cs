@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace MockNet.Http.Tests
+namespace Theorem.MockNet.Http.Tests
 {
     public class IsExpressionVisitorTests
     {
@@ -83,7 +83,7 @@ namespace MockNet.Http.Tests
             var visitor = new IsExpressionVisitor();
             var result = visitor.Visit(expr);
 
-            Assert.Equal("x => SameAs(x, value(MockNet.Http.Tests.IsExpressionVisitorTests+<>c__DisplayClass3_0).expected)", result.ToString());
+            Assert.Equal("x => SameAs(x, value(Theorem.MockNet.Http.Tests.IsExpressionVisitorTests+<>c__DisplayClass3_0).expected)", result.ToString());
 
             var actual = Invoke(result, expected);
 

@@ -1,6 +1,6 @@
 using SystemViaHeaderValue = System.Net.Http.Headers.ViaHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class ViaHeaderValue : IHeaderValue<SystemViaHeaderValue>
     {

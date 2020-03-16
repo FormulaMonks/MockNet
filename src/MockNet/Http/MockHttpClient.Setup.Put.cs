@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public partial class MockHttpClient
     {
@@ -13,7 +13,7 @@ namespace MockNet.Http
         {
             return Setup(HttpMethod.Put, uri);
         }
-               
+
         /// <summary>
         /// Specifices a setup on the HTTP PUT protocol.
         /// </summary>

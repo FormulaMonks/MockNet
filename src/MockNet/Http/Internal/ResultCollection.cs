@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal sealed class ResultCollection
     {
