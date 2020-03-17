@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 using SystemHttpContent = System.Net.Http.HttpContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static partial class Utils
     {

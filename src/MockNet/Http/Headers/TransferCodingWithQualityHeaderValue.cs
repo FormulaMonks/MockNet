@@ -1,6 +1,6 @@
 using SystemTransferCodingWithQualityHeaderValue = System.Net.Http.Headers.TransferCodingWithQualityHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class TransferCodingWithQualityHeaderValue : IHeaderValue<SystemTransferCodingWithQualityHeaderValue>
     {

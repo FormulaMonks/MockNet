@@ -1,7 +1,7 @@
 using System;
 using SystemHttpContent = System.Net.Http.HttpContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class MultipartFormDataContent : IHttpContent
     {

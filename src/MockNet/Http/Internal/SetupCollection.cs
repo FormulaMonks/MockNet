@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal sealed class SetupCollection
     {

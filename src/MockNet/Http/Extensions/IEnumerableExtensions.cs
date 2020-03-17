@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static class IEnumerableExtensions
     {

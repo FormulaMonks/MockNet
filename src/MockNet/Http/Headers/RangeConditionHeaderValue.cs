@@ -1,6 +1,6 @@
 using SystemRangeConditionHeaderValue = System.Net.Http.Headers.RangeConditionHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class RangeConditionHeaderValue : IHeaderValue<SystemRangeConditionHeaderValue>
     {

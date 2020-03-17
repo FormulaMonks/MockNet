@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal class Setup : ISetup
     {

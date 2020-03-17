@@ -1,6 +1,6 @@
 using SystemHttpResponseMessage = System.Net.Http.HttpResponseMessage;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal sealed class Result
     {

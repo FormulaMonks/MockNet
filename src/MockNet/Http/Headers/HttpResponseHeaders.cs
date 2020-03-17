@@ -11,7 +11,7 @@ using SystemProductInfoHeaderValue = System.Net.Http.Headers.ProductInfoHeaderVa
 using SystemNameValueHeaderValue = System.Net.Http.Headers.NameValueHeaderValue;
 using System.Collections;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public sealed class HttpResponseHeaders : HttpHeaders
     {

@@ -1,6 +1,6 @@
 using SystemStringWithQualityHeaderValue = System.Net.Http.Headers.StringWithQualityHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class StringWithQualityHeaderValue : IHeaderValue<SystemStringWithQualityHeaderValue>
     {

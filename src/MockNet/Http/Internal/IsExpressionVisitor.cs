@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal class IsExpressionVisitor : ExpressionVisitor
     {

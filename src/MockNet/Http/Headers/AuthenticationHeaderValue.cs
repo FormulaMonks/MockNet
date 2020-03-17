@@ -1,6 +1,6 @@
 using SystemAuthenticationHeaderValue = System.Net.Http.Headers.AuthenticationHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class AuthenticationHeaderValue : IHeaderValue<SystemAuthenticationHeaderValue>
     {

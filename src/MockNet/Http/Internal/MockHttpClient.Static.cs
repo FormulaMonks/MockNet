@@ -1,4 +1,4 @@
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public partial class MockHttpClient
     {

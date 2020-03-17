@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Xunit;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
-namespace MockNet.Http.Tests
+namespace Theorem.MockNet.Http.Tests
 {
     public class Test
     {

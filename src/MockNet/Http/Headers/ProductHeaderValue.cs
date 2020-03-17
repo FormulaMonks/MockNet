@@ -1,6 +1,6 @@
 using SystemProductHeaderValue = System.Net.Http.Headers.ProductHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class ProductHeaderValue : IHeaderValue<SystemProductHeaderValue>
     {

@@ -5,7 +5,7 @@ using SystemHttpResponseMessage = System.Net.Http.HttpResponseMessage;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 using System.Threading;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal sealed class HttpMessageHandler : SystemDelegatingHandler
     {

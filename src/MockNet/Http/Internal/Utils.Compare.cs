@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static partial class Utils
     {
@@ -16,7 +16,7 @@ namespace MockNet.Http
 
                 return span1.SequenceEqual(span2);
             }
-            
+
             public static async Task<bool> StreamAsync(Stream stream1, Stream stream2, CancellationToken cancel = default)
             {
                 int BufferSize = 4096;

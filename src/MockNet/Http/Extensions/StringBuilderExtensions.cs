@@ -1,7 +1,7 @@
 using System.Text;
 using SystemHttpHeaders = System.Net.Http.Headers.HttpHeaders;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal static class StringBuilderExtensions
     {
@@ -33,7 +33,7 @@ namespace MockNet.Http
             {
                 --sb.Length;
             }
-            
+
             return sb;
         }
     }
