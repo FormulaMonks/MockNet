@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using SystemHttpHeaders = System.Net.Http.Headers.HttpHeaders;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class HttpHeaders : IEnumerable<KeyValuePair<string, IEnumerable<string>>>, IEnumerable
     {

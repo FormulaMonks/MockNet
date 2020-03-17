@@ -1,7 +1,7 @@
 ![.NET Core](https://github.com/citrusbyte/MockNet/workflows/.NET%20Core/badge.svg?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# MockNet.Http
+# Theorem.MockNet.Http
 
 The package provides a friendly mocking framework to unit test the
 System.Net.Http namespace. Works with any .NET unit testing and mocking library.
@@ -13,7 +13,7 @@ A quick and simple example. This sample mocks a call to the
 of 201 Created.
 
 ``` csharp
-using MockNet.Http;
+using Theorem.MockNet.Http;
 using Xunit; // used here for Asserting.
 
 ...
@@ -74,7 +74,7 @@ public class TodoService
 And the unit test for the `TodoService`
 
 ``` csharp
-using MockNet.Http;
+using Theorem.MockNet.Http;
 using Xunit;
 
 [Fact]

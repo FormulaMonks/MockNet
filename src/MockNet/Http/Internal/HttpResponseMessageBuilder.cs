@@ -2,7 +2,7 @@ using SystemHttpStatusCode = System.Net.HttpStatusCode;
 using SystemHttpResponseMessage = System.Net.Http.HttpResponseMessage;
 using SystemHttpContent = System.Net.Http.HttpContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     internal class HttpResponseMessageBuilder
     {

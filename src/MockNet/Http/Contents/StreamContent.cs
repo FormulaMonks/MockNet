@@ -3,7 +3,7 @@ using System.IO;
 using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemStreamContent = System.Net.Http.StreamContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class StreamContent : IHttpContent, IDisposable
     {

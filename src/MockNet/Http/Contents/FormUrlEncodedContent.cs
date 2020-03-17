@@ -5,7 +5,7 @@ using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemFormUrlEncodedContent = System.Net.Http.FormUrlEncodedContent;
 using System;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class FormUrlEncodedContent : IHttpContent, IDictionary<string, string>
     {
@@ -52,7 +52,7 @@ namespace MockNet.Http
                 if (obj is SystemFormUrlEncodedContent content)
                 {
                     // TODO: implement the object comparison
-                    
+
                     //var collection = Utils.Json.ToDictionary(content.ReadAsStringAsync().GetAwaiter().GetResult()) as Dictionary<string, string>;
 
                     //return equals(this, collection);

@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public partial class MockHttpClient
     {

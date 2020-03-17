@@ -1,6 +1,6 @@
 using SystemContentDispositionHeaderValue = System.Net.Http.Headers.ContentDispositionHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class ContentDispositionHeaderValue : IHeaderValue<SystemContentDispositionHeaderValue>
     {

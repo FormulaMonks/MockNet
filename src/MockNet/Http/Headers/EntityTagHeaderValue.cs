@@ -1,6 +1,6 @@
 using SystemEntityTagHeaderValue = System.Net.Http.Headers.EntityTagHeaderValue;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class EntityTagHeaderValue : IHeaderValue<SystemEntityTagHeaderValue>
     {

@@ -15,7 +15,7 @@ using SystemEntityTagHeaderValue = System.Net.Http.Headers.EntityTagHeaderValue;
 using SystemWarningHeaderValue = System.Net.Http.Headers.WarningHeaderValue;
 using SystemHttpContentHeaders = System.Net.Http.Headers.HttpContentHeaders;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public sealed class HttpRequestHeaders : HttpHeaders
     {

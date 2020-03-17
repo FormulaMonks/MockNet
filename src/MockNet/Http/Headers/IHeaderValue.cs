@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public interface IHeaderValue<T>
     {

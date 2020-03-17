@@ -3,7 +3,7 @@ using System.Text;
 using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemStringContent = System.Net.Http.StringContent;
 
-namespace MockNet.Http
+namespace Theorem.MockNet.Http
 {
     public class StringContent : IHttpContent
     {
