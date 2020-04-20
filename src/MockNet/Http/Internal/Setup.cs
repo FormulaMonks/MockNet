@@ -67,12 +67,12 @@ namespace Theorem.MockNet.Http
             return this;
         }
 
-        public async Task<bool> Matches(SystemHttpRequestMessage message)
+        public async Task<MockHttpClientException> Matches(SystemHttpRequestMessage message)
         {
             // TODO: better match request uri
             if (request.RequestUri != message.RequestUri.PathAndQuery)
             {
-                return false;
+                return MockHttpClientException.UnmatchedRequestUri(request.RequestUri, message.RequestUri.PathAndQuery);
             }
 
             if (request.HeadersValidator is Delegate)
@@ -81,7 +81,7 @@ namespace Theorem.MockNet.Http
                 var b = request.HeadersValidator.DynamicInvoke(headers);
                 if (b is false)
                 {
-                    return false;
+                    return MockHttpClientException.UnmatchedRequestHeaders(request.Headers, headers);
                 }
             }
 
@@ -91,11 +91,11 @@ namespace Theorem.MockNet.Http
                 var b = request.ContentValidator.DynamicInvoke(content);
                 if (b is false)
                 {
-                    return false;
+                    return MockHttpClientException.UnmatchedRequestContent(request.Content, content);
                 }
             }
 
-            return true;
+            return null;
         }
 
         public MockHttpClientException VerifyAll()

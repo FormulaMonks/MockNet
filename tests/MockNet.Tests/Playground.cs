@@ -77,54 +77,6 @@ namespace Theorem.MockNet.Http.Tests
         }
 
         [Fact]
-        public async Task MockExceptionIsThrownIfNoSetup()
-        {
-            var mock = new MockHttpClient();
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/invalid"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfMatchedMultipleRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingResponses()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/");
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfUnmatchedResult()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/path").ReturnsAsync(200);
-
-            await mock.Object.GetAsync("/");
-
-            Assert.Throws<MockHttpClientException>(() => mock.VerifyAll());
-        }
-
-        [Fact]
         public async Task ReturnsHeaderInformation()
         {
             var mock = new MockHttpClient();

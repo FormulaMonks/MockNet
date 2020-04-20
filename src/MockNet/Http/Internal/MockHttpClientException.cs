@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
@@ -11,80 +13,108 @@ namespace Theorem.MockNet.Http
     {
         internal static async Task<MockHttpClientException> NoSetupAsync(SystemHttpRequestMessage request)
         {
-            return new MockHttpClientException(
-                string.Format(
-                    CultureInfo.CurrentCulture,
-                    @"{0} request failed.\n{1}",
-                    await Utils.HttpRequestMessage.ToStringAsync(request),
-                    "All requests on the mock must have a corresponding setup."));
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine("Missing setup for:")
+                .Append(await Utils.HttpRequestMessage.ToStringAsync(request))
+                .AppendLine();
+
+            return new MockHttpClientException(ExceptionReasonTypes.NoStup, message.ToString());
         }
 
-        internal static async Task<MockHttpClientException> NoMatchingRequestsAsync(SystemHttpRequestMessage request)
+        internal static MockHttpClientException UnmatchedRequestUri(string expectedUri, string actualUri)
         {
-            return new MockHttpClientException(
-                string.Format(
-                    CultureInfo.CurrentCulture,
-                    @"{0}\n{1}",
-                    await Utils.HttpRequestMessage.ToStringAsync(request),
-                    "No requests found."));
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine($"Expected Uri '{expectedUri}' but sent Uri '{actualUri}'");
+
+            return new MockHttpClientException(ExceptionReasonTypes.UnmatchedRequestUri, message.ToString());
+        }
+
+        internal static MockHttpClientException UnmatchedRequestHeaders(Expression headers,  HttpRequestHeaders actual)
+        {
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine($"Expected header validation expression:")
+                .AppendLine(headers.ToString()) // TODO: try to remove the "Convert" expression type
+                .AppendLine()
+                .AppendLine("Actual headers:")
+                .AppendLine(actual.ToString());
+
+            return new MockHttpClientException(ExceptionReasonTypes.UnmatchedHeaders, message.ToString());
+        }
+
+        internal static MockHttpClientException UnmatchedRequestContent(Expression content,  object actual)
+        {
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine($"Expected content validation expression:")
+                .AppendLine(content.ToString())
+                .AppendLine()
+                .AppendLine("Actual content:")
+                .AppendLine(actual.ToString());
+
+            return new MockHttpClientException(ExceptionReasonTypes.UnmatchedContent, message.ToString());
         }
 
         internal static async Task<MockHttpClientException> NoMatchingResponses(SystemHttpRequestMessage request)
         {
-            return new MockHttpClientException(
-                string.Format(
-                    CultureInfo.CurrentCulture,
-                    @"{0} request failed.\n{1}",
-                    await Utils.HttpRequestMessage.ToStringAsync(request),
-                    "All requests on the mock must have a corresponding setup."));
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine("Missing response for:")
+                .Append(await Utils.HttpRequestMessage.ToStringAsync(request))
+                .AppendLine();
+
+            return new MockHttpClientException(ExceptionReasonTypes.NoResponse, message.ToString());
         }
 
         internal static async Task<MockHttpClientException> MatchedMultipleRequests(SystemHttpRequestMessage request, int requestCount)
         {
-            return new MockHttpClientException(
-                string.Format(
-                    CultureInfo.CurrentCulture,
-                    "Expected request on the mock once, but found {0} : {1}",
-                    requestCount,
-                    await Utils.HttpRequestMessage.ToStringAsync(request)));
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine($"Expected request on the mock once, but found {requestCount}:")
+                .AppendLine(await Utils.HttpRequestMessage.ToStringAsync(request));
+
+            return new MockHttpClientException(ExceptionReasonTypes.MatchedMoreThanNRequests, message.ToString());
         }
 
         internal static MockHttpClientException UnmatchedResult(Result result)
         {
-            return new MockHttpClientException(
-                string.Format(
-                    CultureInfo.CurrentCulture,
-                    @"{0}:\nThis setup was not matched.",
-                    result));
+            var message = new StringBuilder()
+                .AppendLine()
+                .AppendLine()
+                .AppendLine("Unmatched setup result:")
+                .AppendLine(result.ToString());
+
+            return new MockHttpClientException(ExceptionReasonTypes.UnmatchedResult, message.ToString());
         }
 
         internal static MockHttpClientException Combined(IEnumerable<MockHttpClientException> errors, string preamble = null)
         {
-            var message = new StringBuilder();
+            var list = errors.Select(x => x.Message).ToList();
 
-            if (preamble is string)
+            if (!string.IsNullOrWhiteSpace(preamble))
             {
-                message.Append(preamble)
-                    .AppendLine()
-                    .AppendLine();
+                list.Insert(0, preamble);
             }
 
-            foreach (var error in errors)
-            {
-                message.Append(error.Message)
-                    .AppendLine()
-                    .AppendLine();
-            }
+            var message = new StringBuilder().Join(x => x.AppendLine(), list);
+            var reasons = errors.Select(x => x.Reason).Aggregate((ExceptionReasonTypes)0, (a, c) => { a |= c; return a; });
 
-            return new MockHttpClientException(message.ToString());
+            return new MockHttpClientException(reasons, message.ToString());
         }
 
+        internal ExceptionReasonTypes Reason { get; }
 
-        internal string Reason { get; }
-
-        internal MockHttpClientException(string message) : base(message)
+        internal MockHttpClientException(ExceptionReasonTypes reason, string message) : base(message)
         {
-
+            Reason = reason;
         }
     }
 }

@@ -20,17 +20,19 @@ namespace Theorem.MockNet.Http
         {
             var setups = this.setups.Find(request).ToList();
 
-            if (!setups.Any())
+            // there are no setups that were found successful.
+            if (!setups.Any(x => x.Exception is null))
             {
-                throw await MockHttpClientException.NoMatchingRequestsAsync(request);
+                throw MockHttpClientException.Combined(setups.Select(x => x.Exception));
             }
 
-            if (setups.Count() > 1)
+            // there are more than 1 setup that was found.
+            if (setups.Count(x => x.Exception is null) > 1)
             {
                 throw await MockHttpClientException.MatchedMultipleRequests(request, setups.Count());
             }
 
-            var setup = setups.First();
+            var (setup, exception) = setups.FirstOrDefault(x => x.Exception is null);
 
             if (setup is null)
             {
