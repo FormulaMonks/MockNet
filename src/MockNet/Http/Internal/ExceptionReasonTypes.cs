@@ -5,7 +5,7 @@ namespace Theorem.MockNet.Http
     [Flags]
     internal enum ExceptionReasonTypes
     {
-        NoStup = 1,
+        NoSetup = 1,
         UnmatchedRequestUri = 2,
         UnmatchedHeaders = 4,
         UnmatchedContent = 8,

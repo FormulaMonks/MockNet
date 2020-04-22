@@ -20,7 +20,7 @@ namespace Theorem.MockNet.Http
                 .Append(await Utils.HttpRequestMessage.ToStringAsync(request))
                 .AppendLine();
 
-            return new MockHttpClientException(ExceptionReasonTypes.NoStup, message.ToString());
+            return new MockHttpClientException(ExceptionReasonTypes.NoSetup, message.ToString());
         }
 
         internal static MockHttpClientException UnmatchedRequestUri(string expectedUri, string actualUri)

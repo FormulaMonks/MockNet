@@ -19,7 +19,7 @@ namespace Theorem.MockNet.Http.Tests
 
             var exception = await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
 
-            Assert.Equal(ExceptionReasonTypes.NoStup, exception.Reason);
+            Assert.Equal(ExceptionReasonTypes.NoSetup, exception.Reason);
             Assert.Equal(expected, exception.Message);
         }
 
