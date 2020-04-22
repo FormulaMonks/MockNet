@@ -7,31 +7,31 @@ namespace Theorem.MockNet.Http
 {
     internal static class StringBuilderExtensions
     {
-        public static StringBuilder AppendHeaders(this StringBuilder sb, SystemHttpHeaders headers)
+        public static StringBuilder AppendHeaders(this StringBuilder builder, SystemHttpHeaders headers)
         {
             if (headers is SystemHttpHeaders)
             {
-                sb.Append(headers.ToString());
+                builder.Append(headers.ToString());
             }
 
-            return sb;
+            return builder;
         }
 
-        public static StringBuilder AppendContent(this StringBuilder sb, string content)
+        public static StringBuilder AppendContent(this StringBuilder builder, string content)
         {
             if (!string.IsNullOrWhiteSpace(content))
             {
-                sb.AppendLine(content);
+                builder.AppendLine(content);
             }
 
-            return sb;
+            return builder;
         }
 
-        public static StringBuilder Join(this StringBuilder sb, Func<StringBuilder, StringBuilder> separator, IEnumerable<string> values)
+        public static StringBuilder Join(this StringBuilder builder, Func<StringBuilder, StringBuilder> separator, IEnumerable<string> values)
         {
-            if (values is null || sb is null)
+            if (values is null || builder is null)
             {
-                return sb;
+                return builder;
             }
 
             separator = separator ?? new Func<StringBuilder, StringBuilder>(x => x);
@@ -40,7 +40,7 @@ namespace Theorem.MockNet.Http
             {
                 if (!en.MoveNext())
                 {
-                    return sb;
+                    return builder;
                 }
 
                 var result = new StringBuilder();
@@ -63,14 +63,14 @@ namespace Theorem.MockNet.Http
             }
         }
 
-        public static StringBuilder TrimEnd(this StringBuilder sb)
+        public static StringBuilder TrimEnd(this StringBuilder builder)
         {
-            while (char.IsWhiteSpace(sb[sb.Length - 1]))
+            while (char.IsWhiteSpace(builder[builder.Length - 1]))
             {
-                --sb.Length;
+                --builder.Length;
             }
 
-            return sb;
+            return builder;
         }
     }
 }
