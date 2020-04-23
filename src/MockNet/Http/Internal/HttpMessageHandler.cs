@@ -21,7 +21,7 @@ namespace Theorem.MockNet.Http
             var setups = this.setups.Find(request).ToList();
 
             // there are no setups that were found successful.
-            if (!setups.Any(x => x.Exception is null))
+            if (setups.All(x => x.Exception is MockHttpClientException))
             {
                 throw MockHttpClientException.Combined(setups.Select(x => x.Exception));
             }
