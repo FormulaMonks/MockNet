@@ -13,84 +13,56 @@ namespace Theorem.MockNet.Http
     {
         internal static async Task<MockHttpClientException> NoSetupAsync(SystemHttpRequestMessage request)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine("Missing setup for:")
-                .Append(await Utils.HttpRequestMessage.ToStringAsync(request))
-                .AppendLine();
+            var message = $"\n\nMissing setup for:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.NoSetup, message.ToString());
         }
 
-        internal static MockHttpClientException UnmatchedRequestUri(string expectedUri, string actualUri)
+        internal static async Task<MockHttpClientException> UnmatchedRequestUri(RequestMessage requestMessage, SystemHttpRequestMessage request)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine($"Expected Uri '{expectedUri}' but sent Uri '{actualUri}'");
+            var message = $"\n\nSetup:\n{requestMessage.ToString()}\n\nDid not match the Uri for request:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.UnmatchedRequestUri, message.ToString());
         }
 
-        internal static MockHttpClientException UnmatchedRequestHeaders(Expression headers,  HttpRequestHeaders actual)
+        internal static async Task<MockHttpClientException> UnmatchedHttpMethod(RequestMessage requestMessage, SystemHttpRequestMessage request)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine($"Expected header validation expression:")
-                .AppendLine(headers.ToString()) // TODO: try to remove the "Convert" expression type
-                .AppendLine()
-                .AppendLine("Actual headers:")
-                .AppendLine(actual.ToString());
+            var message = $"\n\nSetup:\n{requestMessage.ToString()}\n\nDid not match the HTTP method for request:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
+
+            return new MockHttpClientException(ExceptionReasonTypes.UnmatchedHttpMethod, message.ToString());
+        }
+
+        internal static async Task<MockHttpClientException> UnmatchedRequestHeaders(RequestMessage requestMessage, SystemHttpRequestMessage request)
+        {
+            var message = $"\n\nSetup:\n{requestMessage.ToString()}\n\nDid not match the headers for request:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.UnmatchedHeaders, message.ToString());
         }
 
-        internal static MockHttpClientException UnmatchedRequestContent(Expression content,  object actual)
+        internal static async Task<MockHttpClientException> UnmatchedRequestContent(RequestMessage requestMessage, SystemHttpRequestMessage request)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine($"Expected content validation expression:")
-                .AppendLine(content.ToString())
-                .AppendLine()
-                .AppendLine("Actual content:")
-                .AppendLine(actual.ToString());
+            var message = $"\n\nSetup:\n{requestMessage.ToString()}\n\nDid not match the content for request:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.UnmatchedContent, message.ToString());
         }
 
         internal static async Task<MockHttpClientException> NoMatchingResponses(SystemHttpRequestMessage request)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine("Missing response for:")
-                .Append(await Utils.HttpRequestMessage.ToStringAsync(request))
-                .AppendLine();
+            var message = $"\n\nMissing response for:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.NoResponse, message.ToString());
         }
 
         internal static async Task<MockHttpClientException> MatchedMultipleRequests(SystemHttpRequestMessage request, int requestCount)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine($"Expected request on the mock once, but found {requestCount}:")
-                .AppendLine(await Utils.HttpRequestMessage.ToStringAsync(request));
+            var message = $"\n\nExpected request on the mock once, but found {requestCount}:\n{await Utils.HttpRequestMessage.ToStringAsync(request)}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.MatchedMoreThanNRequests, message.ToString());
         }
 
         internal static MockHttpClientException UnmatchedResult(Result result)
         {
-            var message = new StringBuilder()
-                .AppendLine()
-                .AppendLine()
-                .AppendLine("Unmatched setup result:")
-                .AppendLine(result.ToString());
+            var message = $"\n\nUnmatched setup result:\n{result.ToString()}\n";
 
             return new MockHttpClientException(ExceptionReasonTypes.UnmatchedResult, message.ToString());
         }
@@ -104,7 +76,7 @@ namespace Theorem.MockNet.Http
                 list.Insert(0, preamble);
             }
 
-            var message = new StringBuilder().Join(x => x.AppendLine(), list);
+            var message = new StringBuilder().Join(x => x.Append("-------"), list);
             var reasons = errors.Select(x => x.Reason).Aggregate((ExceptionReasonTypes)0, (a, c) => { a |= c; return a; });
 
             return new MockHttpClientException(reasons, message.ToString());

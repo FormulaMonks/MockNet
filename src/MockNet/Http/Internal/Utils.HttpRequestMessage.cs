@@ -12,7 +12,7 @@ namespace Theorem.MockNet.Http
             public static async Task<string> ToStringAsync(SystemHttpRequestMessage request)
             {
                 var sb = new StringBuilder()
-                    .AppendLine($"{request.Method} {request.RequestUri}")
+                    .AppendLine($"{request.Method} {request.RequestUri.PathAndQuery}")
                     .AppendHeaders(request.Headers)
                     .AppendHeaders(request.Content?.Headers)
                     .AppendLine();

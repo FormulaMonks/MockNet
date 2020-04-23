@@ -214,6 +214,21 @@ namespace Theorem.MockNet.Http.Tests
             Assert.Equal(201, (int)result.StatusCode);
         }
 
+        [Fact]
+        public async Task TestMultipleMocksWithOneSuccessful()
+        {
+            var mock = new MockHttpClient();
+
+            mock.Setup(HttpMethod.Get, "/api/v2").ReturnsAsync(201);
+            mock.Setup(HttpMethod.Get, "/api/v1").ReturnsAsync(203);
+            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
+            mock.Setup(HttpMethod.Get, "/api").ReturnsAsync(204);
+
+            var result = await mock.Object.GetAsync("/");
+
+            Assert.Equal(200, (int)result.StatusCode);
+        }
+
         class Employee
         {
             public int Id { get; set; }
