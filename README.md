@@ -38,6 +38,10 @@ public class Todo
     public int Id { get; set; }
     public string Title { get; set; }
     public bool Completed { get; set; }
+
+    public Todo() {}
+
+    public Todo(int id, int userId, string title) => (Id, UserId, Title) = (id, userId, title);
 }
 ```
 
@@ -48,7 +52,7 @@ using System.Net.Http;
 
 public class TodoService
 {
-    private HtHttpClient _httpClient;
+    private HttpClient _httpClient;
 
     public TodoService(HttpClient httpClient)
     {
@@ -59,14 +63,30 @@ public class TodoService
     {
         var response = await this._httpClient.GetAsync($"/todos/{id}");
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var json = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<Todo>(json);
+            throw new Exception("Todo not found");
         }
 
-        throw new Exception("NotFound");
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonConvert.DeserializeObject<Todo>(json);
+    }
+
+    public async Task<Todo> CreateAsync(Todo todo)
+    {
+        var content = new SystemStringContent(JsonConvert.SerializeObject(todo), Encoding.UTF8, "application/json");
+
+        var response = await this._httpClient.PostAsync("/todos", content);
+
+        if (response.IsSuccessStatusCode &&
+            response.Headers.TryGetValues("todo-id", out IEnumerable<string> values) &&
+            int.TryParse(values.FirstOrDefault(), out int id))
+        {
+            return await GetAsync(id);
+        }
+
+        throw new Exception("Error creating todo");
     }
 }
 ```
