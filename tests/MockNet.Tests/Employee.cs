@@ -13,22 +13,13 @@ namespace Theorem.MockNet.Http.Tests
         {
         }
 
-        public Employee(string name, DateTime hireDate, int workHours)
-        {
-            Id = 1;
-            Name = name;
-            HireDate = hireDate;
-            WorkHours = workHours;
-        }
+        public Employee(string name, DateTime hireDate, int workHours) => (Id, Name, HireDate, WorkHours) = (1, name, hireDate, workHours);
 
         public override bool Equals(object obj)
         {
             if (obj is Employee employee)
             {
-                return Id == employee.Id &&
-                    Name == employee.Name &&
-                    HireDate == employee.HireDate &&
-                    WorkHours == employee.WorkHours;
+                return (Id, Name, HireDate, WorkHours) == (employee.Id, employee.Name, employee.HireDate, employee.WorkHours);
             }
 
             return this == obj;
