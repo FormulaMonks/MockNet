@@ -36,34 +36,14 @@ namespace Theorem.MockNet.Http
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            var content = obj switch
             {
-                return false;
-            }
+                ObjectContent c => c.value,
+                SystemStringContent c => Utils.Json.ToObject(c.ReadAsStringAsync().GetAwaiter().GetResult(), type),
+                _ => obj,
+            };
 
-            if (obj.GetType() == type)
-            {
-                return this.value.Equals(obj);
-            }
-
-            {
-                if (obj is ObjectContent content)
-                {
-                    return this.value.Equals(content.value);
-                }
-            }
-
-            {
-                if (obj is SystemStringContent content)
-                {
-                    var json = content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var value = Utils.Json.ToObject(json, type);
-
-                    return this.value.Equals(value);
-                }
-            }
-
-            return false;
+            return this.value.Equals(content);
         }
         #endregion
 
