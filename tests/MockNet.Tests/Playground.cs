@@ -77,54 +77,6 @@ namespace Theorem.MockNet.Http.Tests
         }
 
         [Fact]
-        public async Task MockExceptionIsThrownIfNoSetup()
-        {
-            var mock = new MockHttpClient();
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/invalid"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfMatchedMultipleRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingResponses()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/");
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfUnmatchedResult()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/path").ReturnsAsync(200);
-
-            await mock.Object.GetAsync("/");
-
-            Assert.Throws<MockHttpClientException>(() => mock.VerifyAll());
-        }
-
-        [Fact]
         public async Task ReturnsHeaderInformation()
         {
             var mock = new MockHttpClient();
@@ -260,6 +212,21 @@ namespace Theorem.MockNet.Http.Tests
             var result = await mock.Object.PostAsync("/employees", content);
 
             Assert.Equal(201, (int)result.StatusCode);
+        }
+
+        [Fact]
+        public async Task TestMultipleMocksWithOneSuccessful()
+        {
+            var mock = new MockHttpClient();
+
+            mock.Setup(HttpMethod.Get, "/api/v2").ReturnsAsync(201);
+            mock.Setup(HttpMethod.Get, "/api/v1").ReturnsAsync(203);
+            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
+            mock.Setup(HttpMethod.Get, "/api").ReturnsAsync(204);
+
+            var result = await mock.Object.GetAsync("/");
+
+            Assert.Equal(200, (int)result.StatusCode);
         }
 
         class Employee
