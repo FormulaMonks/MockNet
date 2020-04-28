@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using SystemHttpHeaders = System.Net.Http.Headers.HttpHeaders;
 
@@ -5,36 +7,70 @@ namespace Theorem.MockNet.Http
 {
     internal static class StringBuilderExtensions
     {
-        public static StringBuilder AppendHeaders(this StringBuilder sb, SystemHttpHeaders headers)
+        public static StringBuilder AppendHeaders(this StringBuilder builder, SystemHttpHeaders headers)
         {
             if (headers is SystemHttpHeaders)
             {
-                sb.Append(headers.ToString());
+                builder.Append(headers.ToString());
             }
 
-            return sb;
+            return builder;
         }
 
-        public static StringBuilder AppendContent(this StringBuilder sb, string content)
+        public static StringBuilder AppendContent(this StringBuilder builder, string content)
         {
             if (!string.IsNullOrWhiteSpace(content))
             {
-                sb.AppendLine(content);
+                builder.AppendLine(content);
             }
 
-            return sb;
+            return builder;
         }
 
-
-
-        public static StringBuilder TrimEnd(this StringBuilder sb)
+        public static StringBuilder Join(this StringBuilder builder, Func<StringBuilder, StringBuilder> separator, IEnumerable<string> values)
         {
-            while (char.IsWhiteSpace(sb[sb.Length - 1]))
+            if (values is null || builder is null)
             {
-                --sb.Length;
+                return builder;
             }
 
-            return sb;
+            separator = separator ?? new Func<StringBuilder, StringBuilder>(x => x);
+
+            using (var en = values.GetEnumerator())
+            {
+                if (!en.MoveNext())
+                {
+                    return builder;
+                }
+
+                var result = new StringBuilder();
+                if (en.Current is object)
+                {
+                    result.Append(en.Current);
+                }
+
+                while (en.MoveNext())
+                {
+                    separator(result);
+
+                    if (en.Current is object)
+                    {
+                        result.Append(en.Current);
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        public static StringBuilder TrimEnd(this StringBuilder builder)
+        {
+            while (char.IsWhiteSpace(builder[builder.Length - 1]))
+            {
+                --builder.Length;
+            }
+
+            return builder;
         }
     }
 }

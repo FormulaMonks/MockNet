@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
@@ -60,6 +62,34 @@ namespace Theorem.MockNet.Http
             }
 
             LambdaExpression visit(ExpressionVisitor v, LambdaExpression e) => v.Visit(e) as LambdaExpression;
+        }
+
+        public override string ToString()
+        {
+            var parameterList = new List<string>
+            {
+                $"\"{RequestUri}\"",
+            };
+
+            if (Headers is Expression)
+            {
+                parameterList.Add($"headers: {Headers.ToString()}");
+            }
+
+            if (Content is Expression)
+            {
+                parameterList.Add($"content: {Content.ToString()}");
+            }
+
+            var parameters = string.Join(", ", parameterList.Where(x => x is string));
+            var method = Utils.String.Capitalize(HttpMethod.Method);
+
+            if (ContentType == typeof(object))
+            {
+                return $"Setup{method}({parameters})";
+            }
+
+            return $"Setup{method}<{ContentType}>({parameters})";
         }
     }
 }

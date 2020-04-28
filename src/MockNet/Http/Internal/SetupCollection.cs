@@ -21,13 +21,13 @@ namespace Theorem.MockNet.Http
             }
         }
 
-        public IEnumerable<Setup> Find(SystemHttpRequestMessage message)
+        public IEnumerable<(Setup Setup, MockHttpClientException Exception)> Find(SystemHttpRequestMessage message)
         {
             // TODO IAsyncEnumerable
 
-            if (setups.Count == 0)
+            if (!setups.Any())
             {
-                yield return null;
+                yield return (null, null);
             }
 
             lock (setups)
@@ -36,11 +36,9 @@ namespace Theorem.MockNet.Http
 
                 foreach (var setup in setups)
                 {
-                    var matched = setup.Matches(message).GetAwaiter().GetResult();
-                    if (matched)
-                    {
-                        yield return setup;
-                    }
+                    var exception = setup.Matches(message).GetAwaiter().GetResult();
+
+                    yield return (setup, exception);
                 }
             }
         }
