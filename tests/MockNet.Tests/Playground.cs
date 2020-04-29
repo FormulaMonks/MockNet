@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xunit;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
@@ -229,15 +230,29 @@ namespace Theorem.MockNet.Http.Tests
             Assert.Equal(200, (int)result.StatusCode);
         }
 
-        class Employee
+        public static IEnumerable<object[]> TestReturnsObjectTypeData()
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
+            yield return new object[] { "expected" };
+            yield return new object[] { 1 };
+            yield return new object[] { 1.2 };
+            yield return new object[] { 1L };
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { new Employee("John Doe", DateTime.Now, 40 ) };
         }
 
-        class Company
+        [Theory]
+        [MemberData(nameof(TestReturnsObjectTypeData))]
+        public async Task TestReturnsObjectType(object expected)
         {
-            public IEnumerable<Employee> Employees { get; set; }
+            var mock = new MockHttpClient();
+
+            mock.SetupGet("/").ReturnsAsync(content: expected);
+
+            var result = await mock.Object.GetAsync("/");
+
+            var actual = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync(), expected.GetType());
+
+            Assert.Equal(expected, actual);
         }
     }
 }
