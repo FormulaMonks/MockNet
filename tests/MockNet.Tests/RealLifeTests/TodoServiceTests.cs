@@ -46,7 +46,7 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
             var expected = new Todo(2, 456, "go shopping");
 
             var responseHeaders = new HttpResponseHeaders();
-            responseHeaders.Add("todo-id", expected.Id.ToString());
+            responseHeaders.Add("Location", $"https://localhost/todos/{expected.Id}");
 
             mock.SetupPost<Todo>("/todos",
                 content: x => x.UserId == todo.UserId &&

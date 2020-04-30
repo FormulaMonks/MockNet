@@ -18,9 +18,11 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
             this._httpClient = httpClient;
         }
 
-        public async Task<Todo> GetAsync(int id)
+        public Task<Todo> GetAsync(int id) => GetAsync($"/todos/{id}");
+
+        private async Task<Todo> GetAsync(string requestUri)
         {
-            var response = await this._httpClient.GetAsync($"/todos/{id}");
+            var response = await this._httpClient.GetAsync(requestUri);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -39,10 +41,9 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
             var response = await this._httpClient.PostAsync("/todos", content);
 
             if (response.IsSuccessStatusCode &&
-                response.Headers.TryGetValues("todo-id", out IEnumerable<string> values) &&
-                int.TryParse(values.FirstOrDefault(), out int id))
+                response.Headers.Location is Uri uri)
             {
-                return await GetAsync(id);
+                return await GetAsync(uri.ToString());
             }
 
             throw new Exception("Error creating todo");
