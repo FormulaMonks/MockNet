@@ -48,7 +48,12 @@ public class Todo
 Service to consume the api
 
 ``` csharp
+using System;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SystemStringContent = System.Net.Http.StringContent;
 
 public class TodoService
 {
@@ -59,9 +64,11 @@ public class TodoService
         this._httpClient = httpClient;
     }
 
-    public async Task<Todo> GetAsync(int id)
+    public Task<Todo> GetAsync(int id) => GetAsync($"/todos/{id}");
+
+    private async Task<Todo> GetAsync(string requestUri)
     {
-        var response = await this._httpClient.GetAsync($"/todos/{id}");
+        var response = await this._httpClient.GetAsync(requestUri);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -80,10 +87,9 @@ public class TodoService
         var response = await this._httpClient.PostAsync("/todos", content);
 
         if (response.IsSuccessStatusCode &&
-            response.Headers.TryGetValues("todo-id", out IEnumerable<string> values) &&
-            int.TryParse(values.FirstOrDefault(), out int id))
+            response.Headers.Location is Uri uri)
         {
-            return await GetAsync(id);
+            return await GetAsync(uri.ToString());
         }
 
         throw new Exception("Error creating todo");
@@ -97,41 +103,91 @@ And the unit test for the `TodoService`
 using Theorem.MockNet.Http;
 using Xunit;
 
-[Fact]
-public async Task GetAsync_should_return_expected_todoAsync()
+public class TodoServiceTests
 {
-    var mock = new MockHttpClient();
-    var service = new TodoService(mock.Object);
+    private TodoService service;
+    private MockHttpClient mock;
 
-    var expected = new Todo
+    public TodoServiceTests()
     {
-        Id = 123,
-        UserId = 456,
-        Title = "go shopping",
-        Completed = false,
-    };
+        this.mock = new MockHttpClient();
+        this.service = new TodoService(mock.Object);
+    }
 
-    var resultingContent = new StringContent(JsonConvert.SerializeObject(expected));
+    [Fact]
+    public async Task GetAsync_should_return_expected_todo()
+    {
+        var expected = new Todo(1, 456, "go shopping");
 
-    mock.SetupGet("/todos/1").ReturnsAsync(201, resultingContent);
+        mock.SetupGet("/todos/1").ReturnsAsync(201, expected);
 
-    var actual = await service.GetAsync(1);
+        var actual = await service.GetAsync(1);
 
-    Assert.Equal(expected.Id, actual.Id);
-    Assert.Equal(expected.UserId, actual.UserId);
-    Assert.Equal(expected.Title, actual.Title);
-    Assert.Equal(expected.Completed, actual.Completed);
-}
+        Assert.Equal(expected.Id, actual.Id);
+        Assert.Equal(expected.UserId, actual.UserId);
+        Assert.Equal(expected.Title, actual.Title);
+        Assert.Equal(expected.Completed, actual.Completed);
+    }
 
-[Fact]
-public async Task GetAsync_should_throw_exception()
-{
-    var mock = new MockHttpClient();
-    var service = new TodoService(mock.object);
+    [Fact]
+    public async Task GetAsync_should_throw_exception_when_invalid_status_code_is_returned()
+    {
+        mock.SetupGet("/todos/1").ReturnsAsync(404);
 
-    mock.SetupGet("/todos/1").ReturnsAsync(404);
+        await Assert.ThrowsAsync<Exception>(() => service.GetAsync(1));
+    }
 
-    await Assert.Throws<Exception>(() => service.GetAsync(1));
+    [Fact]
+    public async Task CreateAsync_should_create_and_return_new_todo()
+    {
+        var todo = new Todo(0, 456, "go shopping");
+        var expected = new Todo(2, 456, "go shopping");
+
+        var responseHeaders = new HttpResponseHeaders();
+        responseHeaders.Add("Location", $"https://localhost/todos/{expected.Id}");
+
+        mock.SetupPost<Todo>("/todos",
+            content: x => x.UserId == todo.UserId &&
+                x.Title == todo.Title &&
+                x.Completed == todo.Completed).ReturnsAsync(201, responseHeaders);
+
+        mock.SetupGet($"/todos/{expected.Id}").ReturnsAsync(expected);
+
+        var actual = await service.CreateAsync(todo);
+
+        Assert.Equal(expected.Id, actual.Id);
+        Assert.Equal(expected.UserId, actual.UserId);
+        Assert.Equal(expected.Title, actual.Title);
+        Assert.Equal(expected.Completed, actual.Completed);
+    }
+
+    [Fact]
+    public async Task CreateAsync_should_throw_exception_when_invalid_status_code_is_returned()
+    {
+        mock.SetupPost("/todos").ReturnsAsync(404);
+
+        await Assert.ThrowsAsync<Exception>(() => service.CreateAsync(new Todo()));
+    }
+
+    [Fact]
+    public async Task CreateAsync_should_throw_exception_when_missing_location_header()
+    {
+        mock.SetupPost("/todos").ReturnsAsync(200);
+
+        await Assert.ThrowsAsync<Exception>(() => service.CreateAsync(new Todo()));
+    }
+
+    [Fact]
+    public async Task CreateAsync_should_throw_exception_if_location_is_not_a_uri()
+    {
+        var responseHeaders = new HttpResponseHeaders();
+
+        responseHeaders.Add("todo-id", "invalid id");
+
+        mock.SetupPost<Todo>("/todos").ReturnsAsync(201, responseHeaders);
+
+        await Assert.ThrowsAsync<Exception>(() => service.CreateAsync(new Todo()));
+    }
 }
 ```
 

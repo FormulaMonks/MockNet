@@ -17,7 +17,7 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
         }
 
         [Fact]
-        public async Task GetAsync_should_return_expected_todoAsync()
+        public async Task GetAsync_should_return_expected_todo()
         {
             var expected = new Todo(1, 456, "go shopping");
 
@@ -32,7 +32,7 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
         }
 
         [Fact]
-        public async Task GetAsync_should_throw_exception()
+        public async Task GetAsync_should_throw_exception_when_invalid_status_code_is_returned()
         {
             mock.SetupGet("/todos/1").ReturnsAsync(404);
 
@@ -64,7 +64,7 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
         }
 
         [Fact]
-        public async Task CreateAsync_should_throw_exception_when_invalidstatus_code_is_returned()
+        public async Task CreateAsync_should_throw_exception_when_invalid_status_code_is_returned()
         {
             mock.SetupPost("/todos").ReturnsAsync(404);
 
@@ -72,7 +72,7 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
         }
 
         [Fact]
-        public async Task CreateAsync_should_throw_exception_when_missing_header_value()
+        public async Task CreateAsync_should_throw_exception_when_missing_location_header()
         {
             mock.SetupPost("/todos").ReturnsAsync(200);
 
@@ -80,11 +80,11 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
         }
 
         [Fact]
-        public async Task CreateAsync_should_throw_exception_if_header_isnot_an_int()
+        public async Task CreateAsync_should_throw_exception_if_location_is_not_a_uri()
         {
             var responseHeaders = new HttpResponseHeaders();
 
-            responseHeaders.Add("todo-id", "invalid id");
+            responseHeaders.Add("Location", "invalid id");
 
             mock.SetupPost<Todo>("/todos").ReturnsAsync(201, responseHeaders);
 
