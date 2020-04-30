@@ -5,16 +5,17 @@
     <LangVersion>8</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RootNamespace>Theorem.MockNet</RootNamespace>
-    <Version>1.0.0</Version>
+    <Title>System.Net mocking library for HttpClient</Title>
+    <Version>1.0.1</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Devin Sackett</Authors>
-    <PackageProjectUrl>https://github.com/yiglas/MockNet</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageTags>System.Net HttpClient mocking library</PackageTags>
-    <Copyright>Copyright ©2019</Copyright>
+    <PackageProjectUrl>https://github.com/citrusbyte/MockNet</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageTags>system.net system.net.http httpclient mocking mock library moq mockhttp test fake stub httpmock</PackageTags>
+    <Copyright>Copyright ©2020</Copyright>
     <Description>A mocking framework to mock HttpClient requests.</Description>
     <NeutralLanguage>en</NeutralLanguage>
-    <RepositoryUrl>https://github.com/yiglas/MockNet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/citrusbyte/MockNet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -22,6 +23,10 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\logo.png" Pack="true" Visible="false" PackagePath="\" />
   </ItemGroup>
 
 </Project>
