@@ -23,35 +23,67 @@ namespace Theorem.MockNet.Http
 
         public IReturns ReturnsAsync(int code)
         {
-            return ReturnsAsync(code, null, null);
+            return ReturnsAsync(code, null, (IHttpContent)null);
         }
 
-        public IReturns ReturnsAsync(IHttpContent content)
+        public IReturns ReturnsAsync<THttpContent>(THttpContent content) where THttpContent : IHttpContent
         {
             return ReturnsAsync(defaultHttpStatusCode, null, content);
         }
 
         public IReturns ReturnsAsync(HttpResponseHeaders headers)
         {
-            return ReturnsAsync(defaultHttpStatusCode, headers, null);
+            return ReturnsAsync(defaultHttpStatusCode, headers, (IHttpContent)null);
         }
 
-        public IReturns ReturnsAsync(int code, IHttpContent content)
+        public IReturns ReturnsAsync<THttpContent>(int code, THttpContent content) where THttpContent : IHttpContent
         {
             return ReturnsAsync(code, null, content);
         }
 
         public IReturns ReturnsAsync(int code, HttpResponseHeaders headers)
         {
-            return ReturnsAsync(code, headers, null);
+            return ReturnsAsync(code, headers, (IHttpContent)null);
         }
 
-        public IReturns ReturnsAsync(HttpResponseHeaders headers, IHttpContent content)
+        public IReturns ReturnsAsync<THttpContent>(HttpResponseHeaders headers, THttpContent content) where THttpContent : IHttpContent
         {
             return ReturnsAsync(defaultHttpStatusCode, headers, content);
         }
 
-        public IReturns ReturnsAsync(int code, HttpResponseHeaders headers, IHttpContent content)
+        public IReturns ReturnsAsync(object content)
+        {
+            return ReturnsAsync(defaultHttpStatusCode, null,
+                content is null
+                    ? (IHttpContent)null
+                    : new ObjectContent(content.GetType(), content));
+        }
+
+        public IReturns ReturnsAsync(int code, object content)
+        {
+            return ReturnsAsync(code, null,
+                content is null
+                    ? (IHttpContent)null
+                    : new ObjectContent(content.GetType(), content));
+        }
+
+        public IReturns ReturnsAsync(int code, HttpResponseHeaders headers, object content)
+        {
+            return ReturnsAsync(code, headers,
+                content is null
+                    ? (IHttpContent)null
+                    : new ObjectContent(content.GetType(), content));
+        }
+
+        public IReturns ReturnsAsync(HttpResponseHeaders headers, object content)
+        {
+            return ReturnsAsync(defaultHttpStatusCode, headers,
+                content is null
+                    ? (IHttpContent)null
+                    : new ObjectContent(content.GetType(), content));
+        }
+
+        public IReturns ReturnsAsync<THttpContent>(int code, HttpResponseHeaders headers, THttpContent content) where THttpContent : IHttpContent
         {
             var message = new HttpResponseMessageBuilder()
                 .WithStatusCode(code)
@@ -67,12 +99,17 @@ namespace Theorem.MockNet.Http
             return this;
         }
 
-        public async Task<bool> Matches(SystemHttpRequestMessage message)
+        public async Task<MockHttpClientException> Matches(SystemHttpRequestMessage message)
         {
+            if (request.HttpMethod.Method != message.Method.Method)
+            {
+                return await MockHttpClientException.UnmatchedHttpMethod(request, message);
+            }
+
             // TODO: better match request uri
             if (request.RequestUri != message.RequestUri.PathAndQuery)
             {
-                return false;
+                return await MockHttpClientException.UnmatchedRequestUri(request, message);
             }
 
             if (request.HeadersValidator is Delegate)
@@ -81,7 +118,7 @@ namespace Theorem.MockNet.Http
                 var b = request.HeadersValidator.DynamicInvoke(headers);
                 if (b is false)
                 {
-                    return false;
+                    return await MockHttpClientException.UnmatchedRequestHeaders(request, message);
                 }
             }
 
@@ -91,11 +128,11 @@ namespace Theorem.MockNet.Http
                 var b = request.ContentValidator.DynamicInvoke(content);
                 if (b is false)
                 {
-                    return false;
+                    return await MockHttpClientException.UnmatchedRequestContent(request, message);
                 }
             }
 
-            return true;
+            return null;
         }
 
         public MockHttpClientException VerifyAll()

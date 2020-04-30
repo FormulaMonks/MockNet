@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xunit;
 using SystemHttpRequestMessage = System.Net.Http.HttpRequestMessage;
 
@@ -74,54 +75,6 @@ namespace Theorem.MockNet.Http.Tests
 
                 Assert.Equal(second, (int)result.StatusCode);
             }
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrownIfNoSetup()
-        {
-            var mock = new MockHttpClient();
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/invalid"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfMatchedMultipleRequests()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfNoMatchingResponses()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/");
-
-            await Assert.ThrowsAsync<MockHttpClientException>(() => mock.Object.GetAsync("/"));
-        }
-
-        [Fact]
-        public async Task MockExceptionIsThrowIfUnmatchedResult()
-        {
-            var mock = new MockHttpClient();
-            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(201);
-            mock.Setup(HttpMethod.Get, "/path").ReturnsAsync(200);
-
-            await mock.Object.GetAsync("/");
-
-            Assert.Throws<MockHttpClientException>(() => mock.VerifyAll());
         }
 
         [Fact]
@@ -262,15 +215,44 @@ namespace Theorem.MockNet.Http.Tests
             Assert.Equal(201, (int)result.StatusCode);
         }
 
-        class Employee
+        [Fact]
+        public async Task TestMultipleMocksWithOneSuccessful()
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
+            var mock = new MockHttpClient();
+
+            mock.Setup(HttpMethod.Get, "/api/v2").ReturnsAsync(201);
+            mock.Setup(HttpMethod.Get, "/api/v1").ReturnsAsync(203);
+            mock.Setup(HttpMethod.Get, "/").ReturnsAsync(200);
+            mock.Setup(HttpMethod.Get, "/api").ReturnsAsync(204);
+
+            var result = await mock.Object.GetAsync("/");
+
+            Assert.Equal(200, (int)result.StatusCode);
         }
 
-        class Company
+        public static IEnumerable<object[]> TestReturnsObjectTypeData()
         {
-            public IEnumerable<Employee> Employees { get; set; }
+            yield return new object[] { "expected" };
+            yield return new object[] { 1 };
+            yield return new object[] { 1.2 };
+            yield return new object[] { 1L };
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { new Employee("John Doe", DateTime.Now, 40 ) };
+        }
+
+        [Theory]
+        [MemberData(nameof(TestReturnsObjectTypeData))]
+        public async Task TestReturnsObjectType(object expected)
+        {
+            var mock = new MockHttpClient();
+
+            mock.SetupGet("/").ReturnsAsync(content: expected);
+
+            var result = await mock.Object.GetAsync("/");
+
+            var actual = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync(), expected.GetType());
+
+            Assert.Equal(expected, actual);
         }
     }
 }
