@@ -176,18 +176,6 @@ public class TodoServiceTests
 
         await Assert.ThrowsAsync<Exception>(() => service.CreateAsync(new Todo()));
     }
-
-    [Fact]
-    public async Task CreateAsync_should_throw_exception_if_location_is_not_a_uri()
-    {
-        var responseHeaders = new HttpResponseHeaders();
-
-        responseHeaders.Add("todo-id", "invalid id");
-
-        mock.SetupPost<Todo>("/todos").ReturnsAsync(201, responseHeaders);
-
-        await Assert.ThrowsAsync<Exception>(() => service.CreateAsync(new Todo()));
-    }
 }
 ```
 
