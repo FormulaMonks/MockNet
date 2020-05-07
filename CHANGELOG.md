@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1]
 ### Added
 - Cleaned up exception messages.
-- Added ability to pass POCO as a result object.
+- Added ability to pass POCO as a result.
 - Real life test cases under the Test project
+
+### Fixed
+- Bug where HTTP protocol was not being matched
 
 ## [1.0.0] - 2020-03-31
