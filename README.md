@@ -1,5 +1,6 @@
 ![.NET Core](https://github.com/citrusbyte/MockNet/workflows/.NET%20Core/badge.svg?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NuGet](https://img.shields.io/nuget/v/MockNet.svg?style=flat)](https://www.nuget.org/packages/MockNet/)
 
 # Theorem.MockNet.Http
 
