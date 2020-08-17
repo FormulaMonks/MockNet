@@ -10,11 +10,11 @@ namespace Theorem.MockNet.Http
         internal HttpContentHeaders(SystemHttpContentHeaders contentHeadersStore)
         {
             this.contentHeadersStore = contentHeadersStore;
+            store = contentHeadersStore;
         }
-        
-        internal HttpContentHeaders()
+
+        internal HttpContentHeaders() : this(new System.Net.Http.ByteArrayContent(new byte[] { }).Headers)
         {
-            contentHeadersStore = new System.Net.Http.ByteArrayContent(new byte[]{}).Headers;
         }
 
         public HttpHeaderValueCollection<string> Allow =>
