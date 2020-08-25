@@ -5,7 +5,13 @@
 # Theorem.MockNet.Http
 
 The package provides a friendly mocking framework to unit test the
-System.Net.Http namespace. Works with any .NET unit testing and mocking library.
+System.Net.Http namespace. 
+
+## Main features:
+- works with any .NET unit testing and mocking library
+- convenient syntax to setup http request and response messages and their properties
+- ability to validate request headers and content matching with lambda predicates
+- ability to specify status code, headers and content to be returned from the HTTP call
 
 ## Examples:
 
@@ -147,6 +153,8 @@ public class TodoServiceTests
         var responseHeaders = new HttpResponseHeaders();
         responseHeaders.Add("Location", $"https://localhost/todos/{expected.Id}");
 
+        // pass lambda predicate to validate request content
+        // response from the HTTP Post method will have 201 status code and Location header
         mock.SetupPost<Todo>("/todos",
             content: x => x.UserId == todo.UserId &&
                 x.Title == todo.Title &&

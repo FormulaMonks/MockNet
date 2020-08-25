@@ -48,6 +48,8 @@ namespace Theorem.MockNet.Http.Tests.RealLifeTests
             var responseHeaders = new HttpResponseHeaders();
             responseHeaders.Add("Location", $"https://localhost/todos/{expected.Id}");
 
+            // pass lambda predicate to validate request content
+            // response from the HTTP Post method will have 201 status code and Location header  
             mock.SetupPost<Todo>("/todos",
                 content: x => x.UserId == todo.UserId &&
                     x.Title == todo.Title &&
