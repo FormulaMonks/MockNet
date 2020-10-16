@@ -4,7 +4,7 @@ using SystemHttpContent = System.Net.Http.HttpContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class ObjectContent<T> : IHttpContent
+    public class ObjectContent<T> : HttpContent
     {
         private readonly ObjectContent content;
 
@@ -13,7 +13,7 @@ namespace Theorem.MockNet.Http
             this.content = new ObjectContent(typeof(T), content);
         }
 
-        public SystemHttpContent ToHttpContent() => content.ToHttpContent();
+        protected override SystemHttpContent ToSystemHttpContent() => content.ToHttpContent();
 
         #region Overrides
         public override string ToString()

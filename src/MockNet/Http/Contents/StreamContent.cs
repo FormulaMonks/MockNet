@@ -5,7 +5,7 @@ using SystemStreamContent = System.Net.Http.StreamContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class StreamContent : IHttpContent, IDisposable
+    public class StreamContent : HttpContent, IDisposable
     {
         private readonly Stream content;
         private readonly int bufferSize;
@@ -21,7 +21,7 @@ namespace Theorem.MockNet.Http
             this.bufferSize = bufferSize;
         }
 
-        public SystemHttpContent ToHttpContent() => new SystemStreamContent(content, bufferSize);
+        protected override SystemHttpContent ToSystemHttpContent() => new SystemStreamContent(content, bufferSize);
 
         #region Overrides
         public override string ToString()

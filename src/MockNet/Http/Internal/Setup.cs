@@ -23,30 +23,30 @@ namespace Theorem.MockNet.Http
 
         public IReturns ReturnsAsync(int code)
         {
-            return ReturnsAsync(code, null, (IHttpContent)null);
+            return ReturnsAsync(code, null, (HttpContent)null);
         }
 
-        public IReturns ReturnsAsync<THttpContent>(THttpContent content) where THttpContent : IHttpContent
+        public IReturns ReturnsAsync<THttpContent>(THttpContent content) where THttpContent : HttpContent
         {
             return ReturnsAsync(defaultHttpStatusCode, null, content);
         }
 
         public IReturns ReturnsAsync(HttpResponseHeaders headers)
         {
-            return ReturnsAsync(defaultHttpStatusCode, headers, (IHttpContent)null);
+            return ReturnsAsync(defaultHttpStatusCode, headers, (HttpContent)null);
         }
 
-        public IReturns ReturnsAsync<THttpContent>(int code, THttpContent content) where THttpContent : IHttpContent
+        public IReturns ReturnsAsync<THttpContent>(int code, THttpContent content) where THttpContent : HttpContent
         {
             return ReturnsAsync(code, null, content);
         }
 
         public IReturns ReturnsAsync(int code, HttpResponseHeaders headers)
         {
-            return ReturnsAsync(code, headers, (IHttpContent)null);
+            return ReturnsAsync(code, headers, (HttpContent)null);
         }
 
-        public IReturns ReturnsAsync<THttpContent>(HttpResponseHeaders headers, THttpContent content) where THttpContent : IHttpContent
+        public IReturns ReturnsAsync<THttpContent>(HttpResponseHeaders headers, THttpContent content) where THttpContent : HttpContent
         {
             return ReturnsAsync(defaultHttpStatusCode, headers, content);
         }
@@ -55,7 +55,7 @@ namespace Theorem.MockNet.Http
         {
             return ReturnsAsync(defaultHttpStatusCode, null,
                 content is null
-                    ? (IHttpContent)null
+                    ? (HttpContent)null
                     : new ObjectContent(content.GetType(), content));
         }
 
@@ -63,7 +63,7 @@ namespace Theorem.MockNet.Http
         {
             return ReturnsAsync(code, null,
                 content is null
-                    ? (IHttpContent)null
+                    ? (HttpContent)null
                     : new ObjectContent(content.GetType(), content));
         }
 
@@ -71,7 +71,7 @@ namespace Theorem.MockNet.Http
         {
             return ReturnsAsync(code, headers,
                 content is null
-                    ? (IHttpContent)null
+                    ? (HttpContent)null
                     : new ObjectContent(content.GetType(), content));
         }
 
@@ -79,11 +79,11 @@ namespace Theorem.MockNet.Http
         {
             return ReturnsAsync(defaultHttpStatusCode, headers,
                 content is null
-                    ? (IHttpContent)null
+                    ? (HttpContent)null
                     : new ObjectContent(content.GetType(), content));
         }
 
-        public IReturns ReturnsAsync<THttpContent>(int code, HttpResponseHeaders headers, THttpContent content) where THttpContent : IHttpContent
+        public IReturns ReturnsAsync<THttpContent>(int code, HttpResponseHeaders headers, THttpContent content) where THttpContent : HttpContent
         {
             var message = new HttpResponseMessageBuilder()
                 .WithStatusCode(code)

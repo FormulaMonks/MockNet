@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using SystemHttpRequestHeaders = System.Net.Http.Headers.HttpRequestHeaders;
 using SystemMediaTypeWithQualityHeaderValue = System.Net.Http.Headers.MediaTypeWithQualityHeaderValue;
 using SystemTransferCodingWithQualityHeaderValue = System.Net.Http.Headers.TransferCodingWithQualityHeaderValue;
@@ -19,12 +17,12 @@ namespace Theorem.MockNet.Http
 {
     public sealed class HttpRequestHeaders : HttpHeaders
     {
-        private SystemHttpContentHeaders contentHeadersStore;
+        private readonly HttpContentHeaders contentHeaders;
 
         internal HttpRequestHeaders(SystemHttpRequestHeaders store, SystemHttpContentHeaders contentHeadersStore)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
-            this.contentHeadersStore = contentHeadersStore;
+            contentHeaders = new HttpContentHeaders(contentHeadersStore);
         }
 
         internal SystemHttpRequestHeaders Store => store as SystemHttpRequestHeaders;
@@ -62,17 +60,19 @@ namespace Theorem.MockNet.Http
         public HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue> Warning => new HttpHeaderValueCollection<WarningHeaderValue, SystemWarningHeaderValue>(Store.Warning, x => (WarningHeaderValue)x);
 
         #region Content headers
-        public HttpHeaderValueCollection<string> Allow => new HttpHeaderValueCollection<string>(contentHeadersStore.Allow as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
-        public ContentDispositionHeaderValue ContentDisposition { get => contentHeadersStore.ContentDisposition; set => contentHeadersStore.ContentDisposition = value; }
-        public HttpHeaderValueCollection<string> ContentEncoding => new HttpHeaderValueCollection<string>(contentHeadersStore.ContentEncoding as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
-        public HttpHeaderValueCollection<string> ContentLanguage => new HttpHeaderValueCollection<string>(contentHeadersStore.ContentEncoding as System.Net.Http.Headers.HttpHeaderValueCollection<string>);
-        public long? ContentLength { get => contentHeadersStore.ContentLength; set => contentHeadersStore.ContentLength = value; }
-        public Uri ContentLocation { get => contentHeadersStore.ContentLocation; set => contentHeadersStore.ContentLocation = value; }
-        public byte[] ContentMD5 { get => contentHeadersStore.ContentMD5; set => contentHeadersStore.ContentMD5 = value; }
-        public ContentRangeHeaderValue ContentRange { get => contentHeadersStore.ContentRange; set => contentHeadersStore.ContentRange = value; }
-        public MediaTypeHeaderValue ContentType { get => contentHeadersStore.ContentType; set => contentHeadersStore.ContentType = value; }
-        public DateTimeOffset? Expires { get => contentHeadersStore.Expires; set => contentHeadersStore.Expires = value; }
-        public DateTimeOffset? LastModified { get => contentHeadersStore.LastModified; set => contentHeadersStore.LastModified = value; }
+
+        public HttpHeaderValueCollection<string> Allow => contentHeaders.Allow;
+        public ContentDispositionHeaderValue ContentDisposition => contentHeaders.ContentDisposition;
+        public HttpHeaderValueCollection<string> ContentEncoding => contentHeaders.ContentEncoding;
+        public HttpHeaderValueCollection<string> ContentLanguage => contentHeaders.ContentLanguage;
+        public long? ContentLength => contentHeaders.ContentLength;
+        public Uri ContentLocation => contentHeaders.ContentLocation;
+        public byte[] ContentMD5 => contentHeaders.ContentMD5;
+        public ContentRangeHeaderValue ContentRange => contentHeaders.ContentRange;
+        public MediaTypeHeaderValue ContentType => contentHeaders.ContentType;
+        public DateTimeOffset? Expires => contentHeaders.Expires;
+        public DateTimeOffset? LastModified => contentHeaders.LastModified;
+
         #endregion
     }
 }

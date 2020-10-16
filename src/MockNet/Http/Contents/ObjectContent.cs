@@ -5,7 +5,7 @@ using SystemStringContent = System.Net.Http.StringContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class ObjectContent : IHttpContent
+    public class ObjectContent : HttpContent
     {
         internal readonly object value;
 
@@ -21,7 +21,7 @@ namespace Theorem.MockNet.Http
             this.mediaType = "application/json";
         }
 
-        public SystemHttpContent ToHttpContent() => new SystemStringContent(Utils.Json.ToString(value), encoding, mediaType);
+        protected override SystemHttpContent ToSystemHttpContent() => new SystemStringContent(Utils.Json.ToString(value), encoding, mediaType);
 
         #region Overrides
         public override string ToString()

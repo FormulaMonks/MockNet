@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemFormUrlEncodedContent = System.Net.Http.FormUrlEncodedContent;
-using System;
 
 namespace Theorem.MockNet.Http
 {
-    public class FormUrlEncodedContent : IHttpContent, IDictionary<string, string>
+    public class FormUrlEncodedContent : HttpContent, IDictionary<string, string>
     {
         private readonly IDictionary<string, string> content;
 
@@ -16,7 +15,7 @@ namespace Theorem.MockNet.Http
             this.content = nameValueCollection.ToDictionary(x => x.Key, x => x.Value);
         }
 
-        public SystemHttpContent ToHttpContent() => new SystemFormUrlEncodedContent(content);
+        protected override SystemHttpContent ToSystemHttpContent() => new SystemFormUrlEncodedContent(content);
 
         #region Overrides
         public override string ToString()

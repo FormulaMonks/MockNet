@@ -5,7 +5,7 @@ using SystemStringContent = System.Net.Http.StringContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class StringContent : IHttpContent
+    public class StringContent : HttpContent
     {
         private readonly string value;
         private readonly Encoding encoding;
@@ -30,7 +30,7 @@ namespace Theorem.MockNet.Http
             this.mediaType = mediaType;
         }
 
-        public SystemHttpContent ToHttpContent() => new SystemStringContent(value, encoding, mediaType);
+        protected override SystemHttpContent ToSystemHttpContent() => new SystemStringContent(value, encoding, mediaType);
 
         #region Overrides
         public override string ToString()

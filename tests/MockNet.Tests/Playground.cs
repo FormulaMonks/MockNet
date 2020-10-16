@@ -254,5 +254,67 @@ namespace Theorem.MockNet.Http.Tests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async Task TestByteArrayContent()
+        {
+            var mock = new MockHttpClient();
+
+            var expectedByteArray = new byte[] { 65 };
+            var expected = new ByteArrayContent(expectedByteArray);
+            expected.Headers.ContentDisposition = ContentDispositionHeaderValue.Parse("attachment");
+            
+            mock.SetupGet("/").ReturnsAsync(content: expected);
+     
+            var result = await mock.Object.GetAsync("/");
+            var resultByteArray = await result.Content.ReadAsByteArrayAsync();
+            
+            Assert.Equal(expectedByteArray, resultByteArray);
+            Assert.Equal("attachment", result.Content.Headers.ContentDisposition.ToString());
+        }
+        
+        [Fact]
+        public async Task TestResponseContentHeaders()
+        {
+            var mock = new MockHttpClient();
+
+            var currentDate = DateTime.UtcNow;
+            var expectedExpires = new DateTimeOffset(currentDate.AddSeconds(60));
+            var expectedByteArray = new byte[] { 65 };
+            
+            var expected = new ByteArrayContent(expectedByteArray);
+            expected.Headers.Allow.Add("GET");
+            expected.Headers.Allow.Add("POST");
+            expected.Headers.ContentDisposition = ContentDispositionHeaderValue.Parse("attachment");
+            expected.Headers.ContentLength = expectedByteArray.Length;
+            expected.Headers.ContentLocation = new Uri("https://example.com");
+            expected.Headers.ContentRange = ContentRangeHeaderValue.Parse("bytes 200-1000/67589");
+            expected.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+            expected.Headers.ContentMD5 = new byte[] {1};
+            expected.Headers.ContentLanguage.Add("en-US");
+            expected.Headers.ContentEncoding.Add("gzip");
+            expected.Headers.Expires = expectedExpires;
+            expected.Headers.LastModified = currentDate;
+            
+            mock.SetupGet("/").ReturnsAsync(content: expected);
+     
+            var result = await mock.Object.GetAsync("/");
+            var resultByteArray = await result.Content.ReadAsByteArrayAsync();
+            
+            Assert.Equal(expectedByteArray, resultByteArray);
+            Assert.Equal("GET, POST", result.Content.Headers.Allow.ToString());
+            Assert.Equal("attachment", result.Content.Headers.ContentDisposition.ToString());
+            Assert.Equal(expectedByteArray.Length, result.Content.Headers.ContentLength);
+            Assert.Equal("https://example.com/", result.Content.Headers.ContentLocation.AbsoluteUri);
+            Assert.Equal("bytes 200-1000/67589", result.Content.Headers.ContentRange.ToString());
+            Assert.Equal("text/plain", result.Content.Headers.ContentType.ToString());
+            Assert.Equal(new byte[] { 1 }, result.Content.Headers.ContentMD5);
+            Assert.Equal("en-US", result.Content.Headers.ContentLanguage.ToString());
+            Assert.Equal("gzip", result.Content.Headers.ContentEncoding.ToString());
+            Assert.NotNull(result.Content.Headers.Expires);
+            Assert.NotNull(result.Content.Headers.LastModified);
+            Assert.Equal(expectedExpires.ToString("s"), result.Content.Headers.Expires.Value.ToString("s"));
+            Assert.Equal(currentDate.ToString("s"), result.Content.Headers.LastModified.Value.ToString("s"));
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace Theorem.MockNet.Http
     {
         private SystemHttpStatusCode code = SystemHttpStatusCode.OK;
         private HttpResponseHeaders headers;
-        private IHttpContent content;
+        private HttpContent content;
 
         public HttpResponseMessageBuilder WithStatusCode(int code)
         {
@@ -24,7 +24,7 @@ namespace Theorem.MockNet.Http
             return this;
         }
 
-        public HttpResponseMessageBuilder WithContent(IHttpContent content)
+        public HttpResponseMessageBuilder WithContent(HttpContent content)
         {
             this.content = content;
 
@@ -35,7 +35,7 @@ namespace Theorem.MockNet.Http
         {
             var message = new SystemHttpResponseMessage(code);
 
-            if (content is IHttpContent)
+            if (content is HttpContent)
             {
                 message.Content = content.ToHttpContent();
             }

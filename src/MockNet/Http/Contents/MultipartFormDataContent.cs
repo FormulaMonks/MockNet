@@ -3,8 +3,8 @@ using SystemHttpContent = System.Net.Http.HttpContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class MultipartFormDataContent : IHttpContent
+    public class MultipartFormDataContent : HttpContent
     {
-        public SystemHttpContent ToHttpContent() => throw new NotImplementedException();
+        protected override SystemHttpContent ToSystemHttpContent() => throw new NotImplementedException();
     }
 }

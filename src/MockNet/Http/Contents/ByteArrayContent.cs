@@ -1,20 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using SystemHttpContent = System.Net.Http.HttpContent;
 using SystemByteArrayContent = System.Net.Http.ByteArrayContent;
 
 namespace Theorem.MockNet.Http
 {
-    public class ByteArrayContent : IHttpContent
+    public class ByteArrayContent : HttpContent
     {
         private readonly byte[] content;
         private readonly int offset;
         private readonly int count;
 
-        public ByteArrayContent(byte[] content)
+        public ByteArrayContent(byte[] content) : this(content, 0, content.Length)
         {
-            this.content = content;
         }
 
         public ByteArrayContent(byte[] content, int offset, int count)
@@ -24,7 +20,7 @@ namespace Theorem.MockNet.Http
             this.count = count;
         }
 
-        public SystemHttpContent ToHttpContent() => new SystemByteArrayContent(content, offset, count);
+        protected override SystemHttpContent ToSystemHttpContent() => new SystemByteArrayContent(content, offset, count);
 
         #region Overrides
         public override string ToString()
@@ -71,7 +67,7 @@ namespace Theorem.MockNet.Http
 
         public static implicit operator byte[](ByteArrayContent content) => content.content;
         public static implicit operator ByteArrayContent(byte[] content) => new ByteArrayContent(content);
-        public static implicit operator SystemByteArrayContent(ByteArrayContent content) => content.ToHttpContent() as SystemByteArrayContent;
+        public static implicit operator SystemByteArrayContent(ByteArrayContent content) => content.ToSystemHttpContent() as SystemByteArrayContent;
 
         public static bool operator ==(ByteArrayContent content, byte[] bytes)
         {
