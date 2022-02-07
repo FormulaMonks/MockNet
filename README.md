@@ -192,17 +192,17 @@ For more examples on how to test other HttpClient aspects including testing head
 endpoint as well as headers being returned please see [tests/MockNet.Tests/Playground.cs](https://github.com/citrusbyte/MockNet/blob/master/tests/MockNet.Tests/Playground.cs)
 
 
-# About Theorem
+# About TheoremOne
 
-![Theorem](https://cl.ly/8b0a99ca064a/logo.png)
+![TheoremOne](https://theoremone-assets.s3.amazonaws.com/TheoremOne-Logo.png)
 
-This software is lovingly maintained and funded by [Theorem](https://theorem.co).
-At [Theorem](https://theorem.co), we specialize in solving difficult computer science problems for startups and the enterprise.
+This software is lovingly maintained and funded by [TheoremOne](https://theoremone.co).
+At [TheoremOne](https://theoremone.co), we specialize in solving difficult computer science problems for startups and the enterprise.
 
-At Theorem we believe in and support open source software.
-* Check out more of our open source software at Theorem Labs.
-* Learn more about [our work](https://theorem.co/portfolio).
-* [Hire us](https://theorem.co/contact-us) to work on your project.
-* [Want to join the team?](http://theorem.co/careers)
+At TheoremOne we believe in and support open source software.
+* Check out more of our open source software at TheoremOne Labs.
+* Learn more about [our work](https://theoremone.co/portfolio).
+* [Hire us](https://theoremone.co/contact-us) to work on your project.
+* [Want to join the team?](http://theoremone.co/careers)
 
-*Theorem and the Theorem logo are trademarks or registered trademarks of Theorem, LLC.*
+*TheoremOne and the TheoremOne logo are trademarks or registered trademarks of TheoremOne, LLC.*
